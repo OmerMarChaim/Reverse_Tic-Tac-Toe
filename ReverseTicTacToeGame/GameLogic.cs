@@ -43,18 +43,33 @@ namespace ReverseTicTacToeGame
             
             eTurnOf currentPlaying;
             currentPlaying = m_Player1.IsComputer ? eTurnOf.Computer : eTurnOf.Player1;
-
+            (int, int) spot;
             while (wantToPlayFlag==true)
             {
                 bool thisMoveCouseWin = false;
                 bool hasTheUserEnterQ = false;
+                bool isEmptySpot = true;
                 while(!thisMoveCouseWin || !hasTheUserEnterQ)
                 {
                     switch(currentPlaying)
                     {
                         case eTurnOf.Player1:
                             {
-                                break;
+                               spot= ConsoleUI.GetValidSpotInBoard();
+                               if(isQsignInSpot(spot))
+                               {
+                                   ///TODO
+                                   /// Undersnt we quit by Q
+                                   break;
+                               }
+                               isEmptySpot = isThisEmptySpot(spot);
+                               while(!isEmptySpot)
+                               {
+                                   spot=ConsoleUI.GetNewValidSpotInBoard(spot);
+                                }
+
+                               (isEmptySpot)
+                               break;
                             }
                         case eTurnOf.Player2:
                             {
@@ -70,6 +85,16 @@ namespace ReverseTicTacToeGame
                 /// print stistics
                 wantToPlayFlag = ConsoleUI.isUserWantAnotherGame();
             }
+        }
+
+        private static bool isQsignInSpot((int, int) i_Spot)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static bool isThisEmptySpot((int, int) i_Spot)
+        {
+            throw new NotImplementedException();
         }
     }
 }

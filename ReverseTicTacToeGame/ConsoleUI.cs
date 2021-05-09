@@ -19,5 +19,16 @@ namespace ReverseTicTacToeGame
        {
            bool WantAnotherGame = ValiditionUI.WantAnotherGame();
        }
+
+       public static (int, int) GetValidSpotInBoard()
+       {
+           throw new NotImplementedException();
+       }
+
+       public static (int, int) GetNewValidSpotInBoard((int, int) spot)
+       {
+           Console.WriteLine("the spot"+spot.ToString()+"is not empty, pleasr enter a new one :)");
+           return GetValidSpotInBoard();
+       }
     }
 }
