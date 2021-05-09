@@ -43,7 +43,7 @@ namespace ReverseTicTacToeGame
             
             eTurnOf currentPlaying;
             currentPlaying = m_Player1.IsComputer ? eTurnOf.Computer : eTurnOf.Player1;
-            (int, int) spot;
+            (int, int) point;
             while (wantToPlayFlag==true)
             {
                 bool thisMoveCouseWin = false;
@@ -55,21 +55,29 @@ namespace ReverseTicTacToeGame
                     {
                         case eTurnOf.Player1:
                             {
-                               spot= ConsoleUI.GetValidSpotInBoard();
-                               if(isQsignInSpot(spot))
+                               point= ConsoleUI.GetValidSpotInBoard();
+                               if(isQsignInSpot(point))
                                {
                                    ///TODO
-                                   /// Undersnt we quit by Q
+                                   /// need to be sure we quit by Q and not by won
                                    break;
                                }
-                               isEmptySpot = isThisEmptySpot(spot);
+                               isEmptySpot = isThisEmptySpot(point);
                                while(!isEmptySpot)
                                {
-                                   spot=ConsoleUI.GetNewValidSpotInBoard(spot);
-                                }
+                                   point=ConsoleUI.GetNewValidSpotInBoard(point);
+                                   isEmptySpot = isThisEmptySpot(point);
+                               }
 
-                               (isEmptySpot)
-                               break;
+                               setPointatboard(m_Player1.Sign);
+                               thisMoveCouseWin = thereIsWin(point);
+                              if(thisMoveCouseWin)
+                                  break;
+                              //there is win
+                              else
+                              {
+                                  currentPlaying = m_Player2.IsComputer ? eTurnOf.Computer : eTurnOf.Player2;
+                              }
                             }
                         case eTurnOf.Player2:
                             {
@@ -85,6 +93,16 @@ namespace ReverseTicTacToeGame
                 /// print stistics
                 wantToPlayFlag = ConsoleUI.isUserWantAnotherGame();
             }
+        }
+
+        private static bool thereIsWin((int, int) i_Point)
+        {
+            throw new NotImplementedException();
+        }
+
+        private static void setPointatboard(char i_PlayerSign)
+        {
+            throw new NotImplementedException();
         }
 
         private static bool isQsignInSpot((int, int) i_Spot)
