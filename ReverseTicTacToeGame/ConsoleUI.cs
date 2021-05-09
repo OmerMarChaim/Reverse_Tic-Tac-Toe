@@ -17,7 +17,9 @@ namespace ReverseTicTacToeGame
 
        public static bool isUserWantAnotherGame()
        {
+           ///ask if the user want another game 
            bool WantAnotherGame = ValiditionUI.WantAnotherGame();
+           return false;
        }
 
        public static (int, int) GetValidSpotInBoard()
@@ -30,5 +32,17 @@ namespace ReverseTicTacToeGame
            Console.WriteLine("the spot"+spot.ToString()+"is not empty, pleasr enter a new one :)");
            return GetValidSpotInBoard();
        }
+
+       public static void PrintTieMessege()
+       {
+           ///Todo
+           /// print tie messege
+           /// call the function to ask if want another game
+       }
+
+        internal static void PrintWinMessege(string v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

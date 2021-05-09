@@ -98,18 +98,37 @@ namespace ReverseTicTacToeGame
                               ///  setPointatboard();
                                 break;
                             }
-                            if(currentPlaying == eTurnOf.Player1)
-                            {
-                                m_Player1.NumberOfWins++;
-                            }
-                            if (currentPlaying == eTurnOf.Player1)
+                           
 
                     }
                 }
-                ///TODO
-                /// print stistics
+
+                if (thisMoveCouseTie)
+                {
+                    ConsoleUI.PrintTieMessege();
+                }
+                else if (thisMoveCouseWin|| hasTheUserEnterQ)
+                {
+                    if (currentPlaying == eTurnOf.Player1)
+                    {
+                        ///we need to add to the other plyer
+                        m_Player2.NumberOfWins++;
+                        ConsoleUI.PrintWinMessege("Player 2");
+                    }
+
+                    if(currentPlaying == eTurnOf.Player2)
+                    {
+                        ///we need to add to the other plyer
+                        m_Player1.NumberOfWins++;
+                        ConsoleUI.PrintWinMessege("Player 1");
+                    }
+
+                }
+                ///need to do method to print stistics
                 wantToPlayFlag = ConsoleUI.isUserWantAnotherGame();
+
             }
+            
         }
 
         private static bool thereIsTie((int, int) point)
