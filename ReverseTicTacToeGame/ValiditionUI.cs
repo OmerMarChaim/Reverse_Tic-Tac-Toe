@@ -4,7 +4,7 @@ namespace ReverseTicTacToeGame
 {
     class ValiditionUI
     {
-        public static int getValidBoardSize()
+        public static byte getValidBoardSize()
         {
             throw new NotImplementedException();
         }
@@ -12,6 +12,12 @@ namespace ReverseTicTacToeGame
         public static bool isPlayerIsComputer()
         {
             throw new NotImplementedException();
+        }
+
+        public static bool WantAnotherGame()
+        {
+            ///TODO
+            return false;
         }
     }
 }
