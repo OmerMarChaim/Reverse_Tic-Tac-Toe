@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace ReverseTicTacToeGame
 {
-    class Program
+    public class Program
     {
         public static void Main()
         {
-            ConsoleUI.InitGame();
-
+            UserInterface.InitGame();
         }
     }
 }

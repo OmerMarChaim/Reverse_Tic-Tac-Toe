@@ -1,6 +1,6 @@
 namespace ReverseTicTacToeGame
 {
-    public class Player
+    public struct Player
     ///TODO
     /// Meybe struct
     {
@@ -13,6 +13,7 @@ namespace ReverseTicTacToeGame
         {
             r_Sign = i_Sign;
             m_IsComputer = i_IsComputer;
+            m_NumberOfWins = 0;
         }
 
         public int NumberOfWins

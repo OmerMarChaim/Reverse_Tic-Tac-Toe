@@ -1,25 +1,25 @@
 ﻿using System;
 
-
 namespace ReverseTicTacToeGame
 {
     internal class GameLogic
     {
-        private Board m_GameBoard;
-        private static Player m_Player1;
-        private static Player m_Player2;
-        private static gameState m_currentGameState;
+        private static Board s_GameBoard;
+        private static Player s_Player1;
+        private static Player s_Player2;
+        private static eGameState s_CurrentGameState;
+        private static Player s_Winner;
         internal const char k_Empty = (char)0;
-        internal const char k_Circle = 'O';
-        internal const char k_Cross = 'X';
+        private const char k_Circle = 'O';
+        private const char k_Cross = 'X';
 
-        public enum eTurnOf
+        internal enum eTurnOf
         {
             Player1,
             Player2
         }
 
-        public enum gameState
+        internal enum eGameState
         {
             Playing,
             Win,
@@ -27,24 +27,37 @@ namespace ReverseTicTacToeGame
             Quit
         }
 
-
         public GameLogic(byte i_BoardSize, bool i_Player1IsComputer, bool i_Player2IsComputer)
         {
-
-            m_GameBoard = new Board(i_BoardSize);
-            m_Player1 = new Player(k_Cross, i_Player1IsComputer);
-            m_Player2 = new Player(k_Circle, i_Player2IsComputer);
-            m_currentGameState = gameState.Playing;
+            s_GameBoard = new Board(i_BoardSize);
+            s_Player1 = new Player(k_Cross, i_Player1IsComputer);
+            s_Player2 = new Player(k_Circle, i_Player2IsComputer);
+            s_CurrentGameState = eGameState.Playing;
         }
 
-        public gameState CuurentGameState
+        public static eGameState CurrentGameState
         {
-            get { return m_currentGameState; }
-            set { m_currentGameState = value; }
+            get { return s_CurrentGameState; }
+            set { s_CurrentGameState = value; }
+        }
+        public static Player Winner
+        {
+            get { return s_Winner; }
+            set { s_Winner = value; }
+        }
+        public static Player Player1
+        {
+            get { return s_Player1; }
+            set { s_Player1 = value; }
         }
         
+        public static Player Player2
+        {
+            get { return s_Player2; }
+            set { s_Player2 = value; }
+        }
 
-    ///TODO
+        ///TODO
         /// loop1 until user doesnt want another game
         ///     loop2 until we get Q or somone is won
         ///            is computer turn? yes-
@@ -55,110 +68,41 @@ namespace ReverseTicTacToeGame
         ///  
         public static void OneMoveInGame()
         {
-            
-            eTurnOf currentPlaying = eTurnOf.Player1;
-            (int, int) point;
-           
-                bool thisMoveCouseWin = false;
-                bool hasTheUserEnterQ = false;
-                bool thisMoveCouseTie = false;
-               
-                    switch(currentPlaying)
-                    {
-                        case eTurnOf.Player1:
-                            {
-                                point = m_Player1.IsComputer == true ? getComputerRandomPoint() : getHumanPointByUser();
-
-                                if(m_currentGameState==)
-                                {
-                                    ///TODO
-                                    /// need to cheack at Console U;
-                                    hasTheUserEnterQ = true;
-                                    break;
-                                }
-                             
-
-                                setPointatboard(m_Player1.Sign,point);
-                                if(thereIsWin(point))
-                                {
-                                    //there is win
-                                    thisMoveCouseWin = true;
-                                    break;
-                                }
-                              
-                                else if(thereIsTie(point))
-                                {
-                                    //there is Tie
-                                    thisMoveCouseTie = true;
-                                    break;
-                                }
-                                {
-                                    currentPlaying =  eTurnOf.Player2;
-                                }
-                                break;
-                            }
-                        case eTurnOf.Player2:
-                            {
-                                break;
-                            }
-                    }
-               
-
-                if (thisMoveCouseTie)
-                {
-                    ConsoleUI.PrintTieMessege();
-                }
-                else if (thisMoveCouseWin|| hasTheUserEnterQ)
-                {
-                    if (currentPlaying == eTurnOf.Player1)
-                    {
-                        ///we need to add to the other plyer
-                        m_Player2.NumberOfWins++;
-                        ConsoleUI.PrintWinMessege("Player 2");
-                    }
-
-                    if(currentPlaying == eTurnOf.Player2)
-                    {
-                        ///we need to add to the other plyer
-                        m_Player1.NumberOfWins++;
-                        ConsoleUI.PrintWinMessege("Player 1");
-                    }
-
-                }
-                ///need to do method to print stistics
-                wantToPlayFlag = ConsoleUI.isUserWantAnotherGame();
-
-            
-            
-        }
-
-        private static (int, int) getHumanPointByUser()
-        {
-            bool isEmptySpot = true;
-
-            (int,int) validSpotInBoard= ConsoleUI.GetValidSpotInBoard();
-            isEmptySpot = isThisEmptySpot(validSpotInBoard);
-            // should be in function 
-            while (!isEmptySpot)
+            //eTurnOf currentPlaying = eTurnOf.Player1;
+            (int row, int colomn) point;
+            Player[] players = { s_Player1, s_Player2 };
+            foreach(Player player in players)
             {
-                validSpotInBoard = ConsoleUI.GetNewValidSpotInBoard(validSpotInBoard);
-                isEmptySpot = isThisEmptySpot(validSpotInBoard);
+                if(player.IsComputer == false)
+                {
+                    point = UserInterface.GetValidPointFromUser(); // the slot is inrange and free   
+                }
+                else
+                {
+                    point = getRandomPointForComputer();
+                }
+
+                setPointOnBoard(point, player.Sign);
+                updateStateOfGame();
+                if(s_CurrentGameState != eGameState.Playing) 
+                {
+                    break;
+                }
+
             }
-
-            return validSpotInBoard;
         }
 
-        private static (int, int) getComputerRandomPoint()
+        private static void updateStateOfGame()
         {
             throw new NotImplementedException();
         }
 
-        private static bool thereIsTie((int, int) point)
+        private static (int, int) getRandomPointForComputer()
         {
             throw new NotImplementedException();
         }
 
-        private static void setPointatboard((int, int) point, char sign)
+        private static void setPointOnBoard((int, int) i_Point, char i_Sign)
         {
             throw new NotImplementedException();
         }
@@ -170,14 +114,19 @@ namespace ReverseTicTacToeGame
             throw new NotImplementedException();
         }
 
-        private static bool thereIsWin((int, int) i_Point)
+        internal static bool ThereIsWin((int, int) i_Point)
         {
             ///TODO
-            /// check if the last move couse win in the board
+            /// check if the last move couse win in the board and if so update the winner filed
+            throw new NotImplementedException();
+        }
+        
+        private static bool thereIsTie((int, int) i_Point)
+        {
             throw new NotImplementedException();
         }
 
-        private static void setPointatboard(char i_PlayerSign, (int,int) i_point)
+        private static void setPointOnBoard(char i_PlayerSign, (int, int) i_Point)
         {
             ///TODO
             /// drew this plyersign in the spesific spot in board
@@ -191,7 +140,7 @@ namespace ReverseTicTacToeGame
             throw new NotImplementedException();
         }
 
-        private static bool isThisEmptySpot((int, int) i_Spot)
+        internal static bool isThisEmptySpot((int, int) i_Spot)
         {
             ///Todo
             /// check if the spot at the spesific board is empty
@@ -199,3 +148,88 @@ namespace ReverseTicTacToeGame
         }
     }
 }
+
+        //     switch(currentPlaying)
+        //     {
+        //         case eTurnOf.Player1:
+        //             {
+        //                 point = s_Player1.IsComputer == true ? getComputerRandomPoint() : getPointFromUser();
+        //
+        //                 if(s_CurrentGameState ==)
+        //                 {
+        //                     ///TODO
+        //                     /// need to cheack at Console U;
+        //                     hasTheUserEnterQ = true;
+        //
+        //                     break;
+        //                 }
+        //
+        //                 setPointatboard(s_Player1.Sign, point);
+        //                 if(thereIsWin(point))
+        //                 {
+        //                     //there is win
+        //                     thisMoveCouseWin = true;
+        //
+        //                     break;
+        //                 }
+        //
+        //                 else if(thereIsTie(point))
+        //                 {
+        //                     //there is Tie
+        //                     thisMoveCouseTie = true;
+        //
+        //                     break;
+        //                 }
+        //
+        //                 {
+        //                     currentPlaying = eTurnOf.Player2;
+        //                 }
+        //
+        //                 break;
+        //             }
+        //         case eTurnOf.Player2:
+        //             {
+        //                 break;
+        //             }
+        //     }
+        //
+        //     if(thisMoveCouseTie)
+        //     {
+        //         ConsoleUi.PrintTieMessege();
+        //     }
+        //     else if(thisMoveCouseWin || hasTheUserEnterQ)
+        //     {
+        //         if(currentPlaying == eTurnOf.Player1)
+        //         {
+        //             ///we need to add to the other plyer
+        //             s_Player2.NumberOfWins++;
+        //             ConsoleUi.PrintWinMessege("Player 2");
+        //         }
+        //
+        //         if(currentPlaying == eTurnOf.Player2)
+        //         {
+        //             ///we need to add to the other plyer
+        //             s_Player1.NumberOfWins++;
+        //             ConsoleUi.PrintWinMessege("Player 1");
+        //         }
+        //     }
+        //
+        //     ///need to do method to print stistics
+        //     wantToPlayFlag = ConsoleUi.IsUserWantAnotherGame();
+        // }
+
+        // private static (int, int) getPointFromUser()
+        // {
+        //     bool isEmptySpot = true;
+        //
+        //     (int, int) validSpotInBoard = ConsoleUI.GetValidSpotInBoard();
+        //     isEmptySpot = isThisEmptySpot(validSpotInBoard);
+        //     // should be in function 
+        //     while(!isEmptySpot)
+        //     {
+        //         validSpotInBoard = ConsoleUI.GetNewValidSpotInBoard(validSpotInBoard);
+        //         isEmptySpot = isThisEmptySpot(validSpotInBoard);
+        //     }
+        //
+        //     return validSpotInBoard;
+        // }
