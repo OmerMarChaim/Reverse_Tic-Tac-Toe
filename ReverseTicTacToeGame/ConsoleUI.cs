@@ -29,8 +29,8 @@ namespace ReverseTicTacToeGame
             {
                 while(i_Game.CuurentGameState == GameLogic.gameState.Playing)
                 {
-
-                 GameLogic.OneMoveInGame();   
+                    GameLogic.OneMoveInGame(currentPlaying);
+                   /// change currentPlaying
                 }
             }
         }
