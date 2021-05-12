@@ -29,25 +29,11 @@ namespace ReverseTicTacToeGame
             {
                 while(i_Game.CuurentGameState == GameLogic.gameState.Playing)
                 {
-                    switch(currentPlaying)
-                    {
-                        case eTurnOf.Player1
-                    }
+
+                 GameLogic.OneMoveInGame();   
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         public static bool isUserWantAnotherGame()

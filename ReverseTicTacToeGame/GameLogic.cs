@@ -58,21 +58,21 @@ namespace ReverseTicTacToeGame
             
             eTurnOf currentPlaying = eTurnOf.Player1;
             (int, int) point;
+           
                 bool thisMoveCouseWin = false;
-              
+                bool hasTheUserEnterQ = false;
                 bool thisMoveCouseTie = false;
-                while(!thisMoveCouseWin && !hasTheUserEnterQ && !thisMoveCouseTie)
-                {
+               
                     switch(currentPlaying)
                     {
                         case eTurnOf.Player1:
                             {
                                 point = m_Player1.IsComputer == true ? getComputerRandomPoint() : getHumanPointByUser();
 
-                                if(isQsignInPoint(point))
+                                if(m_currentGameState==)
                                 {
                                     ///TODO
-                                    /// need to be sure we quit by Q and not by won
+                                    /// need to cheack at Console U;
                                     hasTheUserEnterQ = true;
                                     break;
                                 }
@@ -102,7 +102,7 @@ namespace ReverseTicTacToeGame
                                 break;
                             }
                     }
-                }
+               
 
                 if (thisMoveCouseTie)
                 {
@@ -128,7 +128,7 @@ namespace ReverseTicTacToeGame
                 ///need to do method to print stistics
                 wantToPlayFlag = ConsoleUI.isUserWantAnotherGame();
 
-            }
+            
             
         }
 
