@@ -8,25 +8,43 @@ namespace ReverseTicTacToeGame
         private Board m_GameBoard;
         private static Player m_Player1;
         private static Player m_Player2;
+        private static gameState m_currentGameState;
         internal const char k_Empty = (char)0;
         internal const char k_Circle = 'O';
         internal const char k_Cross = 'X';
+
         public enum eTurnOf
         {
-            Player1, Player2, Computer
+            Player1,
+            Player2
         }
+
+        public enum gameState
+        {
+            Playing,
+            Win,
+            Tie,
+            Quit
+        }
+
 
         public GameLogic(byte i_BoardSize, bool i_Player1IsComputer, bool i_Player2IsComputer)
         {
-      
+
             m_GameBoard = new Board(i_BoardSize);
             m_Player1 = new Player(k_Cross, i_Player1IsComputer);
             m_Player2 = new Player(k_Circle, i_Player2IsComputer);
-            StartGame();
+            m_currentGameState = gameState.Playing;
         }
 
+        public gameState CuurentGameState
+        {
+            get { return m_currentGameState; }
+            set { m_currentGameState = value; }
+        }
+        
 
-        ///TODO
+    ///TODO
         /// loop1 until user doesnt want another game
         ///     loop2 until we get Q or somone is won
         ///            is computer turn? yes-
@@ -35,19 +53,13 @@ namespace ReverseTicTacToeGame
         ///                 ask for a valid (in range) play from ConsoleUi
         ///                 check if the cell is empty 
         ///  
-        private static void StartGame()
+        public static void OneMoveInGame()
         {
-         
-            bool wantToPlayFlag = true;
-
             
-            eTurnOf currentPlaying;
-            currentPlaying = m_Player1.IsComputer ? eTurnOf.Computer : eTurnOf.Player1;
+            eTurnOf currentPlaying = eTurnOf.Player1;
             (int, int) point;
-            while (wantToPlayFlag==true)
-            {
                 bool thisMoveCouseWin = false;
-                bool hasTheUserEnterQ = false;
+              
                 bool thisMoveCouseTie = false;
                 while(!thisMoveCouseWin && !hasTheUserEnterQ && !thisMoveCouseTie)
                 {
@@ -55,7 +67,7 @@ namespace ReverseTicTacToeGame
                     {
                         case eTurnOf.Player1:
                             {
-                                point = m_Player1.IsComputer == true ? getComputerRandomPoint() : getHumanByConsolePoint();
+                                point = m_Player1.IsComputer == true ? getComputerRandomPoint() : getHumanPointByUser();
 
                                 if(isQsignInPoint(point))
                                 {
@@ -67,18 +79,21 @@ namespace ReverseTicTacToeGame
                              
 
                                 setPointatboard(m_Player1.Sign,point);
-                                thisMoveCouseWin = thereIsWin(point);
-                                if(thisMoveCouseWin)
-                                 
+                                if(thereIsWin(point))
+                                {
+                                    //there is win
+                                    thisMoveCouseWin = true;
                                     break;
-                                //there is win
+                                }
+                              
                                 else if(thereIsTie(point))
                                 {
+                                    //there is Tie
                                     thisMoveCouseTie = true;
                                     break;
                                 }
                                 {
-                                    currentPlaying = m_Player2.IsComputer ? eTurnOf.Computer : eTurnOf.Player2;
+                                    currentPlaying =  eTurnOf.Player2;
                                 }
                                 break;
                             }
@@ -86,15 +101,6 @@ namespace ReverseTicTacToeGame
                             {
                                 break;
                             }
-                        case eTurnOf.Computer:
-                            /// there is a problem - need to know who is the player that play right now
-                            {
-                                point = findAnEmptySpotInBoard();
-                              ///  setPointatboard();
-                                break;
-                            }
-                           
-
                     }
                 }
 
@@ -126,12 +132,12 @@ namespace ReverseTicTacToeGame
             
         }
 
-        private static (int, int) getHumanByConsolePoint()
+        private static (int, int) getHumanPointByUser()
         {
             bool isEmptySpot = true;
 
             (int,int) validSpotInBoard= ConsoleUI.GetValidSpotInBoard();
-            isEmptySpot = isThisEmptySpot(point);
+            isEmptySpot = isThisEmptySpot(validSpotInBoard);
             // should be in function 
             while (!isEmptySpot)
             {

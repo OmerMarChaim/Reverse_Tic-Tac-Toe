@@ -44,6 +44,7 @@
     <Compile Include="GameLogic.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="ConsoleUI.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="ValiditionUI.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

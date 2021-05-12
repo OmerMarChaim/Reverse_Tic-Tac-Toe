@@ -1,6 +1,8 @@
 namespace ReverseTicTacToeGame
 {
     public class Player
+    ///TODO
+    /// Meybe struct
     {
         private int m_NumberOfWins;
         private  readonly char r_Sign;

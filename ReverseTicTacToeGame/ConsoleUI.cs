@@ -5,17 +5,52 @@ namespace ReverseTicTacToeGame
 {
     internal class ConsoleUI
     {
-       public void InitGame()
+        public enum eTurnOf
+        {
+            Player1, Player2
+        }
+        public static void InitGame()
        {
         ///ToDo
       Byte boardSize = ValiditionUI.getValidBoardSize();
       bool player1IsComputer = ValiditionUI.isPlayerIsComputer();
       bool player2IsComputer = ValiditionUI.isPlayerIsComputer();
-     GameLogic game= new GameLogic(boardSize, player1IsComputer, player2IsComputer);
-   
+      new GameLogic(boardSize, player1IsComputer, player2IsComputer);
+      startGame(game);
        }
 
-       public static bool isUserWantAnotherGame()
+        private static void startGame(GameLogic i_Game)
+        {
+            bool wantToPlayFlag = true;
+
+            eTurnOf currentPlaying = eTurnOf.Player1;
+            (int, int) point;
+            while(wantToPlayFlag == true)
+            {
+                while(i_Game.CuurentGameState == GameLogic.gameState.Playing)
+                {
+                    switch(currentPlaying)
+                    {
+                        case eTurnOf.Player1
+                    }
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public static bool isUserWantAnotherGame()
        {
            ///ask if the user want another game 
            bool WantAnotherGame = ValiditionUI.WantAnotherGame();
