@@ -70,9 +70,10 @@ namespace ReverseTicTacToeGame
         {
             GameLogic.eGameState currentState = GameLogic.CurrentGameState;
             //switch(currentState)
-            if(currentState == GameLogic.eGameState.Win)
+            char signOfTheWinner = GameLogic.Winner.Sign;
+
+            if (currentState == GameLogic.eGameState.Win)
             {
-                char signOfTheWinner = GameLogic.Winner.Sign;
                 PrintWinMessage(signOfTheWinner);
             }
             else if(currentState == GameLogic.eGameState.Tie)
@@ -81,7 +82,8 @@ namespace ReverseTicTacToeGame
             }
             else if(currentState == GameLogic.eGameState.Quit)
             {
-                PrintQuitMessage();
+            
+                PrintQuitMessage(signOfTheWinner);
             }
 
             printScore();
@@ -106,7 +108,7 @@ namespace ReverseTicTacToeGame
         }
 
         public static void PrintTieMessage()
-        { 
+        {
             Console.WriteLine($"No one is going to win this game, there's a tie! This game is over without winner.");
         }
 
@@ -114,7 +116,7 @@ namespace ReverseTicTacToeGame
         {
             Console.WriteLine($"Well done! The winner is {i_SignOfTheWinner}");
         }
-        
+
         internal static void PrintQuitMessage(char i_SignOfTheWinner)
         {
             ///need to add
@@ -125,9 +127,12 @@ namespace ReverseTicTacToeGame
         {
             (int row, int column) spotInValidFormatUI = ValiditionUi.getValidFormatOfSpot();
             bool isValidSpotOnBoard = false;
+            Console.WriteLine($"Please enter one digit number as row spot for your next move:");
             int row = getValidNumberInBoardRangeFromUser();
-            int column = getValidColumnFromUser();
-            
+            Console.WriteLine($"Please enter one digit number as column spot for your next move:");
+
+            int column = getValidNumberInBoardRangeFromUser();
+            return (row, column);
         }
 
         private static int getValidColumnFromUser()
@@ -135,13 +140,12 @@ namespace ReverseTicTacToeGame
             throw new NotImplementedException();
         }
 
-        private static int getValidNumberInBoardRangeFromUser(string i_rowOrColumn)
+        private static int getValidNumberInBoardRangeFromUser()
         {
             bool isValidNumberFormat = false;
             bool isValidRange = false;
             isValidNumberFormat = false;
             int number = 0;
-            Console.WriteLine($"Please enter one digit number as {i_rowOrColumn} spot for your next move:");
             string userInput = Console.ReadLine();
             isValidNumberFormat = int.TryParse(userInput, out number);
             isValidRange = GameLogic.isInRangeOfBoard(number);
@@ -164,8 +168,6 @@ namespace ReverseTicTacToeGame
             }
 
             return number;
-        }
-            
         }
 
         public static void UpdateTheUserInterfaceTheNewState()
