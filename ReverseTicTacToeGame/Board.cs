@@ -18,7 +18,7 @@ namespace ReverseTicTacToeGame
             m_FreeSpots = new char[i_Size, i_Size];
         }
 
-        public static byte Size
+        public byte Size
         {
             get { return r_Size; }
         }
@@ -36,6 +36,7 @@ namespace ReverseTicTacToeGame
             if (IsEmptySpot(i_Row, i_Column)&& IsPointIsInRange(i_Row,i_Column))
             {
                 m_Board[i_Row, i_Column] = i_Symbol;
+
             }
 
         }
@@ -44,7 +45,8 @@ namespace ReverseTicTacToeGame
 
         internal static void ClearBoardForAnotherGame()
         {
-            m_Board = new char[Size, Size];
+            byte boardSize =(byte)m_Board.Length;
+            m_Board = new char[boardSize, boardSize];
         }
 
         internal static bool IsEmptySpot(byte i_Row, byte i_Column)
