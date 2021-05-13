@@ -123,18 +123,49 @@ namespace ReverseTicTacToeGame
 
         internal static (int, int) GetValidPointFromUser()
         {
-            bool isEmptySpot = true;
+            (int row, int column) spotInValidFormatUI = ValiditionUi.getValidFormatOfSpot();
+            bool isValidSpotOnBoard = false;
+            int row = getValidNumberInBoardRangeFromUser();
+            int column = getValidColumnFromUser();
             
-            (int, int) validSpotInBoard = GetValidSpotInBoard();
-            isEmptySpot = GameLogic.isThisEmptySpot(validSpotInBoard);
-          
-            while(!isEmptySpot)
+        }
+
+        private static int getValidColumnFromUser()
+        {
+            throw new NotImplementedException();
+        }
+
+        private static int getValidNumberInBoardRangeFromUser(string i_rowOrColumn)
+        {
+            bool isValidNumberFormat = false;
+            bool isValidRange = false;
+            isValidNumberFormat = false;
+            int number = 0;
+            Console.WriteLine($"Please enter one digit number as {i_rowOrColumn} spot for your next move:");
+            string userInput = Console.ReadLine();
+            isValidNumberFormat = int.TryParse(userInput, out number);
+            isValidRange = GameLogic.isInRangeOfBoard(number);
+            while(!isValidNumberFormat || !isValidRange)
             {
-                validSpotInBoard = GetNewValidSpotInBoard(validSpotInBoard);
-                isEmptySpot = GameLogic.isThisEmptySpot(validSpotInBoard);
+                if(!isValidNumberFormat)
+                {
+                    Console.WriteLine("Your input is not a one digit number, try again");
+                    userInput = Console.ReadLine();
+                    isValidNumberFormat = int.TryParse(userInput, out number);
+                    isValidRange = GameLogic.isInRangeOfBoard(number);
+                }
+                else if(!isValidRange)
+                {
+                    Console.WriteLine($"Your input is not in range 1 - {GameLogic.GameBoard.Size - 1}, try again");
+                    Console.Read();
+                    isValidNumberFormat = int.TryParse(userInput, out number);
+                    isValidRange = GameLogic.isInRangeOfBoard(number);
+                }
             }
+
+            return number;
+        }
             
-            return validSpotInBoard;
         }
 
         public static void UpdateTheUserInterfaceTheNewState()

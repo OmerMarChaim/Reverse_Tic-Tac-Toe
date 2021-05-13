@@ -5,8 +5,8 @@ namespace ReverseTicTacToeGame
     /// Meybe struct
     {
         private int m_NumberOfWins;
-        private  readonly char r_Sign;
-        private  bool m_IsComputer;
+        private readonly char r_Sign;
+        private readonly bool m_IsComputer;
         // internal string m_Name:
 
         public Player(char i_Sign, bool i_IsComputer)

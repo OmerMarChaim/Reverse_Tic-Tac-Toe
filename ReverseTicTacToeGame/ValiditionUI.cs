@@ -19,5 +19,10 @@ namespace ReverseTicTacToeGame
             ///TODO
             return false;
         }
+
+        public static (int row, int column) getValidFormatOfSpot()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
