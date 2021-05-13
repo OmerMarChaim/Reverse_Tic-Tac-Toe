@@ -57,6 +57,11 @@ namespace ReverseTicTacToeGame
             set { s_Player2 = value; }
         }
 
+        public static Board GameBoard
+        {
+            get { return s_GameBoard; }
+        }
+
         ///TODO
         /// loop1 until user doesnt want another game
         ///     loop2 until we get Q or somone is won
@@ -69,7 +74,7 @@ namespace ReverseTicTacToeGame
         public static void OneMoveInGame()
         {
             //eTurnOf currentPlaying = eTurnOf.Player1;
-            (int row, int colomn) point;
+            (int row, int column) point;
             Player[] players = { s_Player1, s_Player2 };
             foreach(Player player in players)
             {
@@ -156,6 +161,11 @@ namespace ReverseTicTacToeGame
         {
             ///Todo
             /// check if the spot at the spesific board is empty
+            throw new NotImplementedException();
+        }
+
+        public static bool isInRangeOfBoard(int i_Number)
+        {
             throw new NotImplementedException();
         }
     }
