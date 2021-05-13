@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace ReverseTicTacToeGame
 {
     internal class Board
     {
-        private readonly byte r_Size; // enum ?? 
-        private char[,] m_Board;
+        private readonly byte r_Size; 
+        private static char[,] m_Board;
         private char[,] m_FreeSpots; // tuple ?? 
-    
+        private const byte k_MinBoardSize = 3;
+        private const byte k_MaxBoardSize = 9;
 
         public Board(byte i_Size)
         {
@@ -16,7 +18,7 @@ namespace ReverseTicTacToeGame
             m_FreeSpots = new char[i_Size, i_Size];
         }
 
-        public int Size
+        public byte Size
         {
             get { return r_Size; }
         }
@@ -24,36 +26,38 @@ namespace ReverseTicTacToeGame
         public char[,] GameBoard
         {
             get { return m_Board; }
+            set { m_Board = value; }
         }
 
-        internal static void SetValueOnBoard((int,int) i_pointToSet, char i_Symbol)
+
+        internal static void SetValueOnBoard(byte i_Row, byte i_Column, char i_Symbol)
         {
-           
-            
-            if(this.IsEmptySpot(i_pointToSet(0),i_pointToSet[1]))
+
+            if (IsEmptySpot(i_Row, i_Column)&& IsPointIsInRange(i_Row,i_Column))
             {
-                m_Board[i_Row, i_Row] = i_Symbol;
+                m_Board[i_Row, i_Column] = i_Symbol;
+
             }
 
         }
 
       
 
-        internal void ClearBoardForAnotherGame()
+        internal static void ClearBoardForAnotherGame()
         {
-            // TODO
+            byte boardSize =(byte)m_Board.Length;
+            m_Board = new char[boardSize, boardSize];
         }
 
-        internal bool IsEmptySpot(byte i_Row, byte i_Column)
+        internal static bool IsEmptySpot(byte i_Row, byte i_Column)
         {
-            //TODO
-            return false;
+            return m_Board[i_Row,i_Column] == null ;
         }
 
-        internal bool IsInRange(byte i_Row, byte i_Column)
+        internal static bool IsPointIsInRange(byte i_Row, byte i_Column)
         {
-            // TODO
-            return false;
+            
+            return (i_Row>=k_MinBoardSize && i_Row<=k_MaxBoardSize) && (i_Column >= k_MinBoardSize && i_Column <= k_MaxBoardSize);
         }
 
         internal bool IsFull()
