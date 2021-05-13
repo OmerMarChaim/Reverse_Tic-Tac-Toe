@@ -70,22 +70,20 @@ namespace ReverseTicTacToeGame
         {
             GameLogic.eGameState currentState = GameLogic.CurrentGameState;
             //switch(currentState)
-            switch(GameLogic.CurrentGameState)
-            
+            if(currentState == GameLogic.eGameState.Win)
             {
-                case GameLogic.eGameState.Win:
-                    {
-                        char signOfTheWinner = GameLogic.Winner.Sign;
-                        PrintWinMessege(signOfTheWinner);
-                        break;
-                    }
-                case GameLogic.eGameState.Tie:
-                    PrintTieMessege();
-                    break;
-                case GameLogic.eGameState.Quit:
-                    PrintQuitMessege();
-                    break;
+                char signOfTheWinner = GameLogic.Winner.Sign;
+                PrintWinMessage(signOfTheWinner);
             }
+            else if(currentState == GameLogic.eGameState.Tie)
+            {
+                PrintTieMessage();
+            }
+            else if(currentState == GameLogic.eGameState.Quit)
+            {
+                PrintQuitMessage();
+            }
+
             printScore();
         }
 
@@ -107,31 +105,32 @@ namespace ReverseTicTacToeGame
             return GetValidSpotInBoard();
         }
 
-        public static void PrintTieMessege()
+        public static void PrintTieMessage()
         { 
             Console.WriteLine($"No one is going to win this game, there's a tie! This game is over without winner.");
         }
 
-        internal static void PrintWinMessege(char i_SignOfTheWinner)
+        internal static void PrintWinMessage(char i_SignOfTheWinner)
         {
             Console.WriteLine($"Well done! The winner is {i_SignOfTheWinner}");
         }
         
-        internal static void PrintQuitMessege()
+        internal static void PrintQuitMessage(char i_SignOfTheWinner)
         {
-            Console.WriteLine($"No one is going to win this game, there's a tie! This game is over without winner.");
+            ///need to add
+            Console.WriteLine($"The winner is {i_SignOfTheWinner} after the other player quit");
         }
 
         internal static (int, int) GetValidPointFromUser()
         {
             bool isEmptySpot = true;
             
-            (int, int) validSpotInBoard = UserInterface.GetValidSpotInBoard();
+            (int, int) validSpotInBoard = GetValidSpotInBoard();
             isEmptySpot = GameLogic.isThisEmptySpot(validSpotInBoard);
-            // should be in function 
+          
             while(!isEmptySpot)
             {
-                validSpotInBoard = UserInterface.GetNewValidSpotInBoard(validSpotInBoard);
+                validSpotInBoard = GetNewValidSpotInBoard(validSpotInBoard);
                 isEmptySpot = GameLogic.isThisEmptySpot(validSpotInBoard);
             }
             
@@ -145,14 +144,3 @@ namespace ReverseTicTacToeGame
     }
 }
 
-/*
-big update of logic and the following class:
-1. Change name of ConsoleUI.cs to UserInterface.cs - when we will implement the same game with other UI, we dont want to change the word "CONSOLE" in the logic part.
-2. GameLogic.cs :
- - edit names var
- - add member s_Winner that store the winner (player type) of the last game
- - modifiers
- - OneMoveInGame - try a new flow 
- - 
- 
-  */

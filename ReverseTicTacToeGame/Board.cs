@@ -43,7 +43,7 @@ namespace ReverseTicTacToeGame
 
       
 
-        internal void ClearBoard()
+        internal void ClearBoardForAnotherGame()
         {
             // TODO
         }

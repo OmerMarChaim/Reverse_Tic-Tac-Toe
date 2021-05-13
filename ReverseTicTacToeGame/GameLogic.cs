@@ -206,7 +206,7 @@ namespace ReverseTicTacToeGame
         //
         //     if(thisMoveCouseTie)
         //     {
-        //         ConsoleUi.PrintTieMessege();
+        //         ConsoleUi.PrintTieMessage();
         //     }
         //     else if(thisMoveCouseWin || hasTheUserEnterQ)
         //     {
@@ -214,14 +214,14 @@ namespace ReverseTicTacToeGame
         //         {
         //             ///we need to add to the other plyer
         //             s_Player2.NumberOfWins++;
-        //             ConsoleUi.PrintWinMessege("Player 2");
+        //             ConsoleUi.PrintWinMessage("Player 2");
         //         }
         //
         //         if(currentPlaying == eTurnOf.Player2)
         //         {
         //             ///we need to add to the other plyer
         //             s_Player1.NumberOfWins++;
-        //             ConsoleUi.PrintWinMessege("Player 1");
+        //             ConsoleUi.PrintWinMessage("Player 1");
         //         }
         //     }
         //
