@@ -12,6 +12,7 @@ namespace ReverseTicTacToeGame
         internal const char k_Empty = (char)0;
         private const char k_Circle = 'O';
         private const char k_Cross = 'X';
+        private static int[,] checkWinTable;
 
         internal enum eTurnOf
         {
@@ -33,6 +34,13 @@ namespace ReverseTicTacToeGame
             s_Player1 = new Player(k_Cross, i_Player1IsComputer);
             s_Player2 = new Player(k_Circle, i_Player2IsComputer);
             s_CurrentGameState = eGameState.Playing;
+            checkWinTable = new int[i_BoardSize+ 1, i_BoardSize + 1];
+            ///init checkWinTable
+            for(int i = 0; i < i_BoardSize + 1; i++)
+            {
+                checkWinTable[0, i] = int.MinValue;
+                checkWinTable[i, 0] = int.MinValue;
+            }
         }
 
         public static eGameState CurrentGameState
@@ -112,50 +120,53 @@ namespace ReverseTicTacToeGame
         {
             throw new NotImplementedException();
         }
-
-        private static void setPointOnBoard((int, int) i_Point, char i_Sign)
+         internal static void ClearBoardForAnotherGame()
         {
-            throw new NotImplementedException();
+            byte boardSize =(byte)s_GameBoard.Size;
+            s_GameBoard.GameBoard = new char[boardSize, boardSize];
         }
+    
 
-        private static (int, int) findAnEmptySpotInBoard()
+        internal static bool ThereIsWin((int row, int colomn) i_Point)
         {
-            /// TODO
-            /// this is the move of the computer
-            throw new NotImplementedException();
-        }
-
-        internal static bool ThereIsWin((int, int) i_Point)
-        {
-            ///TODO
             /// check if the last move couse win in the board and if so update the winner filed
-            throw new NotImplementedException();
+            int maxValue = int.MinValue;
+            for(int i = 0; i < 3; i++)
+            {
+                for(int j = 0; j < 3; j++)
+                {
+                    int currentValue = checkWinTable[i_Point.row + i, i_Point.colomn + j];
+                    if(currentValue > maxValue)
+                    {
+                        maxValue = currentValue;
+                    }
+                }
+            }
+
+            return false;
         }
         
-        private static bool thereIsTie((int, int) i_Point)
+    /// <summary>
+    /// Tie happend when the board is full and a win didnt couse
+    /// </summary>
+    /// <param name="i_Point"></param>
+    /// <returns></returns>
+        private static bool thereIsTie((int row, int colomn) i_Point)
         {
-            throw new NotImplementedException();
+            return Board.IsFull();
         }
 
-        private static void setPointOnBoard(char i_PlayerSign, (int, int) i_Point)
-        {
-            ///TODO
-            /// drew this plyersign in the spesific spot in board
-            throw new NotImplementedException();
-        }
-
-        private static bool isQsignInPoint((int, int) i_Spot)
+     
+        private static bool isQsignInPoint((int row, int colomn) i_Spot)
         {
             ///TODO
             /// Check if Q has showed - for now we will define it at (-1,-1) point
             throw new NotImplementedException();
         }
 
-        internal static bool isThisEmptySpot((int, int) i_Spot)
+        public static bool isThisEmptySpot((int row, int colomn) i_ValidSpotInBoard)
         {
-            ///Todo
-            /// check if the spot at the spesific board is empty
-            throw new NotImplementedException();
+           return Board.IsEmptySpot((byte)i_ValidSpotInBoard.row,(byte)i_ValidSpotInBoard.colomn)
         }
     }
 }

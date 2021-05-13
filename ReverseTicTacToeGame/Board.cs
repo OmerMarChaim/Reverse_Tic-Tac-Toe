@@ -41,13 +41,8 @@ namespace ReverseTicTacToeGame
 
         }
 
-      
 
-        internal static void ClearBoardForAnotherGame()
-        {
-            byte boardSize =(byte)m_Board.Length;
-            m_Board = new char[boardSize, boardSize];
-        }
+       
 
         internal static bool IsEmptySpot(byte i_Row, byte i_Column)
         {
@@ -60,7 +55,7 @@ namespace ReverseTicTacToeGame
             return (i_Row>=k_MinBoardSize && i_Row<=k_MaxBoardSize) && (i_Column >= k_MinBoardSize && i_Column <= k_MaxBoardSize);
         }
 
-        internal bool IsFull()
+        internal static bool IsFull()
         {
             // TODO
             // check if the m_FreeSpots is empty
