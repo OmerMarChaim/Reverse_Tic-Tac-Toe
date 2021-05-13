@@ -7,9 +7,7 @@ namespace ReverseTicTacToeGame
         private readonly byte r_Size; // enum ?? 
         private char[,] m_Board;
         private char[,] m_FreeSpots; // tuple ?? 
-        // private const char k_Empty = (char)0;
-        // private const char k_Circle = 'O';
-        // private const char k_Cross = 'X';
+    
 
         public Board(byte i_Size)
         {
@@ -28,17 +26,15 @@ namespace ReverseTicTacToeGame
             get { return m_Board; }
         }
 
-        internal bool SetValueOnBoard(byte i_Row, byte i_Column, char i_Symbol)
+        internal static void SetValueOnBoard((int,int) i_pointToSet, char i_Symbol)
         {
-            bool isSuccess = false;
+           
             
-            if(this.IsEmptySpot(i_Row, i_Column))
+            if(this.IsEmptySpot(i_pointToSet(0),i_pointToSet[1]))
             {
                 m_Board[i_Row, i_Row] = i_Symbol;
-                isSuccess = true;
             }
 
-            return isSuccess;
         }
 
       

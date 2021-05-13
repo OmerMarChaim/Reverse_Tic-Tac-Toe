@@ -82,6 +82,7 @@ namespace ReverseTicTacToeGame
                     point = getRandomPointForComputer();
                 }
 
+                Board.SetValueOnBoard(point, player.Sign);
                 setPointOnBoard(point, player.Sign);
                 updateStateOfGame(point);
                 if(s_CurrentGameState != eGameState.Playing) 

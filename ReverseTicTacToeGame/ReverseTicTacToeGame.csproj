@@ -47,5 +47,10 @@
     <Compile Include="Program.cs" />
     <Compile Include="ValiditionUI.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Ex02.ConsoleUtils">
+      <HintPath>..\..\..\..\..\..\temp\Ex02.ConsoleUtils.dll</HintPath>
+    </Reference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
