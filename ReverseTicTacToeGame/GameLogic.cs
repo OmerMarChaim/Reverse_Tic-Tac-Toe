@@ -83,7 +83,7 @@ namespace ReverseTicTacToeGame
                 }
 
                 setPointOnBoard(point, player.Sign);
-                updateStateOfGame();
+                updateStateOfGame(point);
                 if(s_CurrentGameState != eGameState.Playing) 
                 {
                     break;
@@ -92,9 +92,20 @@ namespace ReverseTicTacToeGame
             }
         }
 
-        private static void updateStateOfGame()
+        private static void updateStateOfGame((int row, int colomn) i_LastPointEntered)
         {
-            throw new NotImplementedException();
+            if(ThereIsWin(i_LastPointEntered))
+            {
+                s_CurrentGameState = eGameState.Win;
+            }
+            else if(thereIsTie(i_LastPointEntered))
+            {
+                s_CurrentGameState = eGameState.Tie;
+            }
+            else
+            {
+                s_CurrentGameState = eGameState.Playing;
+            }
         }
 
         private static (int, int) getRandomPointForComputer()

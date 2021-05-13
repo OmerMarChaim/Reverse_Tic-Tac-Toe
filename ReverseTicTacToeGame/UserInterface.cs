@@ -69,18 +69,22 @@ namespace ReverseTicTacToeGame
         private static void updateTheUserInterfaceAccordingTheState()
         {
             GameLogic.eGameState currentState = GameLogic.CurrentGameState;
-            if(currentState == GameLogic.eGameState.Win)
+            //switch(currentState)
+            switch(GameLogic.CurrentGameState)
+            
             {
-                char signOfTheWinner = GameLogic.Winner.Sign;
-                PrintWinMessege(signOfTheWinner);
-            }
-            else if(currentState == GameLogic.eGameState.Tie)
-            {
-                PrintTieMessege();
-            }
-            else
-            {
-                PrintQuitMessege();
+                case GameLogic.eGameState.Win:
+                    {
+                        char signOfTheWinner = GameLogic.Winner.Sign;
+                        PrintWinMessege(signOfTheWinner);
+                        break;
+                    }
+                case GameLogic.eGameState.Tie:
+                    PrintTieMessege();
+                    break;
+                case GameLogic.eGameState.Quit:
+                    PrintQuitMessege();
+                    break;
             }
             printScore();
         }
