@@ -95,10 +95,10 @@ namespace ReverseTicTacToeGame
                 }
                 else
                 {
-                    point = getRandomPointForComputer();
+                    // point = getRandomPointForComputer();
                 }
 
-                s_GameBoard.SetValueOnBoard((int)point.row,(int)point.column, player.Sign);
+                s_GameBoard.SetValueOnBoard(point.row, point.column, player.Sign);
                 updateStateOfGame(point,player);
                 if(s_CurrentGameState != eGameState.Playing) 
                 {
@@ -258,6 +258,32 @@ namespace ReverseTicTacToeGame
         public static bool isInRangeOfBoard(int i_Number)
         {
            return s_GameBoard.IsPointIsInRange(i_Number, i_Number);
+        }
+
+        internal static string ToStringBoard()
+        {
+            Board currentGameBoard = GameLogic.GameBoard;
+            StringBuilder resultedString = new StringBuilder();
+            for(int i = 0; i < currentGameBoard.Size; i++)
+            {
+                resultedString.Append("  {i}  ");
+            }
+            for(int row = 1; row < currentGameBoard.Size; row++)
+            {
+                resultedString.Append($"{row}");
+                for(int col = 1; col < currentGameBoard.Size; col++)
+                {
+                    resultedString.Append($"|  {currentGameBoard.GameBoard[row, col]}  |");
+                }
+
+                resultedString.AppendLine();
+                for(int col = 1; col < currentGameBoard.Size - 1; col++)
+                {
+                    resultedString.Append($"=====");
+                }
+            }
+
+            return resultedString.ToString();
         }
     }
 }

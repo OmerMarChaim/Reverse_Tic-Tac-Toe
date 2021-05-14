@@ -55,9 +55,6 @@ namespace ReverseTicTacToeGame
 
         }
 
-
-       
-
         internal bool IsEmptySpot(int i_Row, int i_Column)
         {
             return m_Board[i_Row,i_Column] == null ;
@@ -78,6 +75,7 @@ namespace ReverseTicTacToeGame
         
         
         
+        
         //
         //constructor of the object board ,include :
         // 1. matrix in between 3-9 cells - V
@@ -90,9 +88,6 @@ namespace ReverseTicTacToeGame
         //  clear the board for new game
         // internal | public | private - V 
         // readonly - V
-
-
-
 
     }
 }
