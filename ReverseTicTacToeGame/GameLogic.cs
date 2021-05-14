@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Security.Cryptography.RandomNumberGenerator;
+using System.Linq;
 namespace ReverseTicTacToeGame
 {
     internal class GameLogic
@@ -130,8 +130,20 @@ namespace ReverseTicTacToeGame
 
         private static (int, int) getRandomPointForComputer()
         {
-            int randomIndex = random.Next(0, s_GameBoard.FreeSpotsInBoard.Count);
-          
+            var random= new Random();
+
+             int randomIndex = random.Next(0, s_GameBoard.FreeSpotsInBoard.Count);
+             (int, int)[] tempArr = s_GameBoard.FreeSpotsInBoard.ToArray();
+             (int row, int column) maybePoint = tempArr[randomIndex];
+            
+             while (!s_GameBoard.IsEmptySpot(maybePoint.row, maybePoint.column))
+             {
+                 ///if enter here there is a bug.
+                randomIndex = random.Next(0, s_GameBoard.FreeSpotsInBoard.Count);
+                maybePoint = tempArr[randomIndex];
+             }
+             return maybePoint;
+
         }
          internal static void ClearBoardForAnotherGame()
         {
