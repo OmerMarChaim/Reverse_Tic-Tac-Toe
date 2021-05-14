@@ -95,7 +95,7 @@ namespace ReverseTicTacToeGame
                 }
 
                 resultedString.AppendLine("");
-                resultedString.Append("  ");
+                resultedString.Append(" "); 
                 for (int col = 1; col < r_Size; col++)
                 {
                     resultedString.Append($"=====");

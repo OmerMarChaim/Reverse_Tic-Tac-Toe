@@ -261,9 +261,11 @@ namespace ReverseTicTacToeGame
             return s_GameBoard.IsEmptySpot((int)i_ValidSpotInBoard.row, (int)i_ValidSpotInBoard.column);
         }
 
-        public static bool isInRangeOfBoard(int i_Number)
+        public static bool isInRangeOfBoard(int i_Number, int i_StartRange, int i_EndRange)
         {
-            return (i_Number >= k_MinBoardSize && i_Number <= k_MaxBoardSize) ;
+            bool isInRangeOfBoard = i_Number >= i_StartRange && i_Number <= i_EndRange;
+
+            return isInRangeOfBoard;
 
         }
 

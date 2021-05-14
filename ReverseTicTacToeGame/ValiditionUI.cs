@@ -9,7 +9,7 @@ namespace ReverseTicTacToeGame
             //get number between 3-9
             //return number between 3-9 
             Console.WriteLine("now enter the board size. please enter an integer between 3-9");
-            return getValidNumberInBoardRangeFromUser()  ;
+            return getValidNumberInBoardRangeFromUser(3,9)  ;
 
         }
         //
@@ -42,7 +42,7 @@ namespace ReverseTicTacToeGame
             return isComputer;
         }
         
-        internal static int getValidNumberInBoardRangeFromUser()
+        internal static int getValidNumberInBoardRangeFromUser(int i_StartRange, int i_EndRange)
         {
             bool isValidNumberFormat = false;
             bool isValidRange = false;
@@ -50,7 +50,7 @@ namespace ReverseTicTacToeGame
             int number = 0;
             string userInput = Console.ReadLine();
             isValidNumberFormat = int.TryParse(userInput, out number);
-            isValidRange = GameLogic.isInRangeOfBoard(number);
+            isValidRange = GameLogic.isInRangeOfBoard(number, i_StartRange, i_EndRange);
             while(!isValidNumberFormat || !isValidRange)
             {
                 if(!isValidNumberFormat)
@@ -58,14 +58,14 @@ namespace ReverseTicTacToeGame
                     Console.WriteLine("Your input is not a one digit number, try again");
                     userInput = Console.ReadLine();
                     isValidNumberFormat = int.TryParse(userInput, out number);
-                    isValidRange = GameLogic.isInRangeOfBoard(number);
+                    isValidRange = GameLogic.isInRangeOfBoard(number, i_StartRange, i_EndRange);
                 }
                 else if(!isValidRange)
                 {
                     Console.WriteLine($"Your input is not in range 1 - {GameLogic.GameBoard.Size - 1}, try again");
-                    Console.Read();
+                    userInput = Console.ReadLine();
                     isValidNumberFormat = int.TryParse(userInput, out number);
-                    isValidRange = GameLogic.isInRangeOfBoard(number);
+                    isValidRange = GameLogic.isInRangeOfBoard(number, i_StartRange, i_EndRange);
                 }
             }
 

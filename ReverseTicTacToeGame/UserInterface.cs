@@ -116,9 +116,9 @@ using System.Text;
         internal static (int, int) GetValidPointFromUser()
         {
             Console.WriteLine($"Please enter one digit number as row spot for your next move:");
-            int row = ValiditionUi.getValidNumberInBoardRangeFromUser();
+            int row = ValiditionUi.getValidNumberInBoardRangeFromUser(1, GameLogic.GameBoard.Size);
             Console.WriteLine($"Please enter one digit number as column spot for your next move:");
-            int column = ValiditionUi.getValidNumberInBoardRangeFromUser();
+            int column = ValiditionUi.getValidNumberInBoardRangeFromUser(1, GameLogic.GameBoard.Size);
             return (row, column);
         }
 
