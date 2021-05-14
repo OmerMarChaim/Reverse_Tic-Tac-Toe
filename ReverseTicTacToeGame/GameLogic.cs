@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Security.Cryptography.RandomNumberGenerator;
 namespace ReverseTicTacToeGame
 {
     internal class GameLogic
@@ -8,7 +8,9 @@ namespace ReverseTicTacToeGame
         private static Player s_Player1;
         private static Player s_Player2;
         private static eGameState s_CurrentGameState;
-        private static Player s_Winner;
+        private static Player s_WinnerPlayer;
+        private static Player s_LoserPlayer;
+
         internal const char k_Empty = (char)0;
         private const char k_Circle = 'O';
         private const char k_Cross = 'X';
@@ -48,10 +50,10 @@ namespace ReverseTicTacToeGame
             get { return s_CurrentGameState; }
             set { s_CurrentGameState = value; }
         }
-        public static Player Winner
+        public static Player WinnerPlayer
         {
-            get { return s_Winner; }
-            set { s_Winner = value; }
+            get { return s_WinnerPlayer; }
+            set { s_WinnerPlayer = value; }
         }
         public static Player Player1
         {
@@ -112,7 +114,7 @@ namespace ReverseTicTacToeGame
         {
             if(ThereIsWin(i_LastPointEntered, i_Player.Sign))
             {
-                ///add to stats
+                s_LoserPlayer = i_Player;
                 
                 s_CurrentGameState = eGameState.Win;
             }
@@ -128,7 +130,8 @@ namespace ReverseTicTacToeGame
 
         private static (int, int) getRandomPointForComputer()
         {
-            throw new NotImplementedException();
+            int randomIndex = random.Next(0, s_GameBoard.FreeSpotsInBoard.Count);
+          
         }
          internal static void ClearBoardForAnotherGame()
         {
@@ -139,71 +142,78 @@ namespace ReverseTicTacToeGame
 
         internal static bool ThereIsWin((int row, int column) i_Point, char i_PlayerSign)
         {
-            if(checkWinInRowAndColumn(i_Point, s_GameBoard.Size, i_PlayerSign) == true
-               || checkWinInRightCross(i_Point, s_GameBoard.Size, i_PlayerSign) == true
-               || checkWinInLeftCross(i_Point, s_GameBoard.Size, i_PlayerSign) == true)
-            {
+            int numberOfSignsToWin = s_GameBoard.Size - 1;
+           return checkWinInRowAndColumn(i_Point, i_PlayerSign, numberOfSignsToWin) == true
+               || checkWinInMainDiagonal(i_Point, i_PlayerSign, numberOfSignsToWin) == true
+               || checkWinInAntidiagonal(i_Point, i_PlayerSign, numberOfSignsToWin) == true;
+         
+        }
 
+        private static bool checkWinInAntidiagonal((int row, int column) i_Point, char i_PlayerSign, int i_NumberOfSignsToWin)
+        {
+            int counter = 0;
+          
+            if(i_Point.row + i_Point.column==s_GameBoard.Size) ///in squere matrix -the anti daigonal the sum of row and column equal to the matrix size+1
+            {
+                for(int i = 0; i < s_GameBoard.Size; i++)
+                {
+                    if(s_GameBoard.GameBoard[i + 1, s_GameBoard.Size - i] == i_PlayerSign)
+                    {
+                        counter++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+
+                }
             }
 
+            return counter == i_NumberOfSignsToWin;
+        }
 
-            /// check if the last move couse win in the board and if so update the winner filed
-          /*
-            int maxValue = int.MinValue;
-            for(int i = 0; i < 3; i++)
+        private static bool checkWinInMainDiagonal((int row, int column) i_Point,  char i_PlayerSign, int i_NumberOfSignsToWin)
+        {
+            int counter = 0;
+          
+            if (i_Point.row == i_Point.column) ///in the main daigonal all the point the i equal to j 
             {
-                for(int j = 0; j < 3; j++)
+                for(int i = 1 ; i < s_GameBoard.Size; i++)
                 {
-                    int currentValue = checkWinTable[i_Point.row + i, i_Point.column + j];
-                    if(currentValue > maxValue)
+                    if(s_GameBoard.GameBoard[i, i] == i_PlayerSign)
                     {
-                        maxValue = currentValue;
+                        counter++;
+                    }
+                    else
+                    {
+                        break;
                     }
                 }
             }
-          */
-            return false;
-        }
-
-        private static bool checkWinInRightCross((int row, int column) i_Point, int i_NumberOfSignsToWin, char i_PlayerSign)
-        {
-            int tempRow = i_Point.row;
-            int tempColumn = i_Point.column;
-            if(s_GameBoard != null)
-            {
-              
-
-                while(s_GameBoard.IsPointIsInRange((int)tempRow, (int)tempColumn))
-                {
-
-                }
-            }
-            return false;
+            return counter== i_NumberOfSignsToWin;
 
         }
 
-        private static bool checkWinInRowAndColumn((int row, int column) i_Point, int i_NumberOfSignsToWin, char i_PlayerSign)
+        private static bool checkWinInRowAndColumn((int row, int column) i_Point, char i_PlayerSign, int i_NumberOfSignsToWin)
         {
             int counterRow = 0;
             int counterColumn = 0;
-            for(int i = 0; i < s_GameBoard.Size ; i++)
+
+            for (int i = 1; i < s_GameBoard.Size ; i++)
             {
-                ///todo do we start from 0 or 1
+             
                 if(s_GameBoard.GameBoard[i_Point.row, i] == i_PlayerSign)
                 {
                     counterRow++;
                 }
-                else if(s_GameBoard.GameBoard[i,i_Point.column] == i_PlayerSign)
+                if(s_GameBoard.GameBoard[i,i_Point.column] == i_PlayerSign)
                 {
                     counterColumn++;
                 }
-                else
-                {
-                    break;
-                }
+               
             }
 
-            return (counterRow == i_NumberOfSignsToWin) || (counterColumn == i_NumberOfSignsToWin);
+            return (counterRow ==  i_NumberOfSignsToWin) || (counterColumn == i_NumberOfSignsToWin);
         }
 
         /// <summary>

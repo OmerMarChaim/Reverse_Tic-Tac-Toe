@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace ReverseTicTacToeGame
@@ -7,7 +8,8 @@ namespace ReverseTicTacToeGame
     {
         private readonly int r_Size; 
         private static char[,] m_Board;
-        private char[,] m_FreeSpots; // tuple ?? 
+     
+        HashSet<(int, int)> m_FreeSpots;
         private const int k_MinBoardSize = 3;
         private const int k_MaxBoardSize = 9;
 
@@ -15,14 +17,24 @@ namespace ReverseTicTacToeGame
         {
             r_Size = i_Size;
             m_Board = new char[i_Size, i_Size];
-            m_FreeSpots = new char[i_Size, i_Size];
+
+            for(int i = 1; i < i_Size; i++)
+            {
+                for(int j = 0; j < i_Size; j++)
+                {
+                    m_FreeSpots.Add((i, j));
+                }
+            }
         }
 
         public int Size
         {
             get { return r_Size; }
         }
-
+        public HashSet<(int, int)> FreeSpotsInBoard
+        {
+            get { return m_FreeSpots; }
+        }
         public char[,] GameBoard
         {
             get { return m_Board; }
@@ -38,6 +50,9 @@ namespace ReverseTicTacToeGame
                 m_Board[i_Row, i_Column] = i_Symbol;
 
             }
+
+            m_FreeSpots.Remove((i_Row, i_Column));
+
 
         }
 

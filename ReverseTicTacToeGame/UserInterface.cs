@@ -71,7 +71,7 @@ namespace ReverseTicTacToeGame
         {
             GameLogic.eGameState currentState = GameLogic.CurrentGameState;
             //switch(currentState)
-            char signOfTheWinner = GameLogic.Winner.Sign;
+            char signOfTheWinner = GameLogic.WinnerPlayer.Sign;
 
             if (currentState == GameLogic.eGameState.Win)
             {
