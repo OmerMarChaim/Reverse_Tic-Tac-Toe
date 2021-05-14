@@ -28,7 +28,7 @@ namespace ReverseTicTacToeGame
             Quit
         }
 
-        public GameLogic(byte i_BoardSize, bool i_Player1IsComputer, bool i_Player2IsComputer)
+        public GameLogic(int i_BoardSize, bool i_Player1IsComputer, bool i_Player2IsComputer)
         {
             s_GameBoard = new Board(i_BoardSize);
             s_Player1 = new Player(k_Cross, i_Player1IsComputer);
@@ -86,6 +86,7 @@ namespace ReverseTicTacToeGame
             Player[] players = { s_Player1, s_Player2 };
             foreach(Player player in players)
             {
+                UserInterface.clearBoardBeforeNewMove();
                 if(player.IsComputer == false)
                 {
                     point = UserInterface.GetValidPointFromUser(); // the slot is inrange and free   
@@ -95,20 +96,24 @@ namespace ReverseTicTacToeGame
                     point = getRandomPointForComputer();
                 }
 
-                Board.SetValueOnBoard((byte)point.row,(byte)point.column, player.Sign);
-                updateStateOfGame(point);
+                s_GameBoard.SetValueOnBoard((int)point.row,(int)point.column, player.Sign);
+                updateStateOfGame(point,player);
                 if(s_CurrentGameState != eGameState.Playing) 
                 {
                     break;
                 }
 
+                UserInterface.printBoard();
+               
             }
         }
 
-        private static void updateStateOfGame((int row, int colomn) i_LastPointEntered)
+        private static void updateStateOfGame((int row, int column) i_LastPointEntered, Player i_Player)
         {
-            if(ThereIsWin(i_LastPointEntered))
+            if(ThereIsWin(i_LastPointEntered, i_Player.Sign))
             {
+                ///add to stats
+                
                 s_CurrentGameState = eGameState.Win;
             }
             else if(thereIsTie(i_LastPointEntered))
@@ -127,51 +132,101 @@ namespace ReverseTicTacToeGame
         }
          internal static void ClearBoardForAnotherGame()
         {
-            byte boardSize =(byte)s_GameBoard.Size;
+            int boardSize =(int)s_GameBoard.Size;
             s_GameBoard.GameBoard = new char[boardSize, boardSize];
         }
     
 
-        internal static bool ThereIsWin((int row, int colomn) i_Point)
+        internal static bool ThereIsWin((int row, int column) i_Point, char i_PlayerSign)
         {
+            if(checkWinInRowAndColumn(i_Point, s_GameBoard.Size, i_PlayerSign) == true
+               || checkWinInRightCross(i_Point, s_GameBoard.Size, i_PlayerSign) == true
+               || checkWinInLeftCross(i_Point, s_GameBoard.Size, i_PlayerSign) == true)
+            {
+
+            }
+
+
             /// check if the last move couse win in the board and if so update the winner filed
+          /*
             int maxValue = int.MinValue;
             for(int i = 0; i < 3; i++)
             {
                 for(int j = 0; j < 3; j++)
                 {
-                    int currentValue = checkWinTable[i_Point.row + i, i_Point.colomn + j];
+                    int currentValue = checkWinTable[i_Point.row + i, i_Point.column + j];
                     if(currentValue > maxValue)
                     {
                         maxValue = currentValue;
                     }
                 }
             }
-
+          */
             return false;
         }
-        
-    /// <summary>
+
+        private static bool checkWinInRightCross((int row, int column) i_Point, int i_NumberOfSignsToWin, char i_PlayerSign)
+        {
+            int tempRow = i_Point.row;
+            int tempColumn = i_Point.column;
+            if(s_GameBoard != null)
+            {
+              
+
+                while(s_GameBoard.IsPointIsInRange((int)tempRow, (int)tempColumn))
+                {
+
+                }
+            }
+            return false;
+
+        }
+
+        private static bool checkWinInRowAndColumn((int row, int column) i_Point, int i_NumberOfSignsToWin, char i_PlayerSign)
+        {
+            int counterRow = 0;
+            int counterColumn = 0;
+            for(int i = 0; i < s_GameBoard.Size ; i++)
+            {
+                ///todo do we start from 0 or 1
+                if(s_GameBoard.GameBoard[i_Point.row, i] == i_PlayerSign)
+                {
+                    counterRow++;
+                }
+                else if(s_GameBoard.GameBoard[i,i_Point.column] == i_PlayerSign)
+                {
+                    counterColumn++;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return (counterRow == i_NumberOfSignsToWin) || (counterColumn == i_NumberOfSignsToWin);
+        }
+
+        /// <summary>
     /// Tie happend when the board is full and a win didnt couse
     /// </summary>
     /// <param name="i_Point"></param>
     /// <returns></returns>
-        private static bool thereIsTie((int row, int colomn) i_Point)
+        private static bool thereIsTie((int row, int column) i_Point)
         {
             return Board.IsFull();
         }
 
      
-        private static bool isQsignInPoint((int row, int colomn) i_Spot)
+        private static bool isQsignInPoint((int row, int column) i_Spot)
         {
             ///TODO
             /// Check if Q has showed - for now we will define it at (-1,-1) point
             throw new NotImplementedException();
         }
 
-        public static bool isThisEmptySpot((int row, int colomn) i_ValidSpotInBoard)
+        public static bool isThisEmptySpot((int row, int column) i_ValidSpotInBoard)
         {
-           return Board.IsEmptySpot((byte)i_ValidSpotInBoard.row,(byte)i_ValidSpotInBoard.colomn)
+            return s_GameBoard.IsEmptySpot((int)i_ValidSpotInBoard.row, (int)i_ValidSpotInBoard.column);
         }
 
         public static bool isInRangeOfBoard(int i_Number)

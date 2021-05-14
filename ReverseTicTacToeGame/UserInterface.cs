@@ -13,10 +13,10 @@ namespace ReverseTicTacToeGame
         public static void InitGame()
         {
             //ToDo
-            Byte boardSize = ValiditionUi.GetValidBoardSize();
+            int boardSize = ValiditionUi.GetValidBoardSize() + 1 ; /// we want board size +1 then what we got 
             bool player1IsComputer = ValiditionUi.IsPlayerIsComputer();
             bool player2IsComputer = ValiditionUi.IsPlayerIsComputer();
-            GameLogic game = new GameLogic(boardSize, player1IsComputer, player2IsComputer);
+            GameLogic game = new GameLogic( boardSize  , player1IsComputer, player2IsComputer);
             startGame();
         }
 
@@ -31,6 +31,7 @@ namespace ReverseTicTacToeGame
                 while(GameLogic.CurrentGameState == GameLogic.eGameState.Playing)
                 {
                     GameLogic.OneMoveInGame();
+
                 }
 
                 updateTheUserInterfaceAccordingTheState(); // win/tie? "msg" ->> score 
@@ -95,17 +96,7 @@ namespace ReverseTicTacToeGame
                 $"The current score is:{GameLogic.Player1.Sign}:{GameLogic.Player1.NumberOfWins}, {GameLogic.Player2.Sign}:{GameLogic.Player2.NumberOfWins}");
         }
 
-        public static (int, int) GetValidSpotInBoard()
-        {
-            throw new NotImplementedException();
-        }
-
-        public static (int, int) GetNewValidSpotInBoard((int, int) i_Spot)
-        {
-            Console.WriteLine($"the spot {i_Spot.ToString()} is not empty, please enter a new one :)");
-
-            return GetValidSpotInBoard();
-        }
+ 
 
         public static void PrintTieMessage()
         {
@@ -127,18 +118,15 @@ namespace ReverseTicTacToeGame
         {
             (int row, int column) spotInValidFormatUI = ValiditionUi.getValidFormatOfSpot();
             bool isValidSpotOnBoard = false;
+
             Console.WriteLine($"Please enter one digit number as row spot for your next move:");
             int row = getValidNumberInBoardRangeFromUser();
             Console.WriteLine($"Please enter one digit number as column spot for your next move:");
-
             int column = getValidNumberInBoardRangeFromUser();
             return (row, column);
         }
 
-        private static int getValidColumnFromUser()
-        {
-            throw new NotImplementedException();
-        }
+       
 
         private static int getValidNumberInBoardRangeFromUser()
         {
@@ -171,6 +159,16 @@ namespace ReverseTicTacToeGame
         }
 
         public static void UpdateTheUserInterfaceTheNewState()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void clearBoardBeforeNewMove()
+        {
+            throw new NotImplementedException();
+        }
+
+        public static void printBoard()
         {
             throw new NotImplementedException();
         }

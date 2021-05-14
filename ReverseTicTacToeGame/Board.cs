@@ -5,20 +5,20 @@ namespace ReverseTicTacToeGame
 {
     internal class Board
     {
-        private readonly byte r_Size; 
+        private readonly int r_Size; 
         private static char[,] m_Board;
         private char[,] m_FreeSpots; // tuple ?? 
-        private const byte k_MinBoardSize = 3;
-        private const byte k_MaxBoardSize = 9;
+        private const int k_MinBoardSize = 3;
+        private const int k_MaxBoardSize = 9;
 
-        public Board(byte i_Size)
+        public Board(int i_Size)
         {
             r_Size = i_Size;
             m_Board = new char[i_Size, i_Size];
             m_FreeSpots = new char[i_Size, i_Size];
         }
 
-        public byte Size
+        public int Size
         {
             get { return r_Size; }
         }
@@ -30,10 +30,10 @@ namespace ReverseTicTacToeGame
         }
 
 
-        internal static void SetValueOnBoard(byte i_Row, byte i_Column, char i_Symbol)
+        internal void SetValueOnBoard(int i_Row, int i_Column, char i_Symbol)
         {
 
-            if (IsEmptySpot(i_Row, i_Column)&& IsPointIsInRange(i_Row,i_Column))
+            if (IsEmptySpot(i_Row, i_Column)==true && IsPointIsInRange(i_Row,i_Column)==true)
             {
                 m_Board[i_Row, i_Column] = i_Symbol;
 
@@ -44,12 +44,12 @@ namespace ReverseTicTacToeGame
 
        
 
-        internal static bool IsEmptySpot(byte i_Row, byte i_Column)
+        internal bool IsEmptySpot(int i_Row, int i_Column)
         {
             return m_Board[i_Row,i_Column] == null ;
         }
 
-        internal static bool IsPointIsInRange(byte i_Row, byte i_Column)
+        internal bool IsPointIsInRange(int i_Row, int i_Column)
         {
             
             return (i_Row>=k_MinBoardSize && i_Row<=k_MaxBoardSize) && (i_Column >= k_MinBoardSize && i_Column <= k_MaxBoardSize);
