@@ -121,15 +121,6 @@ namespace ReverseTicTacToeGame
             return (row, column);
         }
 
-       
-
-
-
-        public static void UpdateTheUserInterfaceTheNewState()
-        {
-            throw new NotImplementedException();
-        }
-
         public static void clearBoardBeforeNewMove()
         {
             Ex02.ConsoleUtils.Screen.Clear();
@@ -137,7 +128,7 @@ namespace ReverseTicTacToeGame
 
         public static void printBoard()
         {
-
+            
         }
     }
 }

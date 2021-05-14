@@ -85,7 +85,7 @@ namespace ReverseTicTacToeGame
         public static void OneMoveInGame()
         {
             //eTurnOf currentPlaying = eTurnOf.Player1;
-            (int row, int column) point;
+            (int row, int column) point = (0, 0);
             Player[] players = { s_Player1, s_Player2 };
             foreach(Player player in players)
             {

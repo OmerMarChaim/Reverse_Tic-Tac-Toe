@@ -13,7 +13,26 @@ namespace ReverseTicTacToeGame
         //
         public static bool IsPlayerIsComputer()
         {
-            throw new NotImplementedException();
+            Console.WriteLine(@"Please choose how is you rival:
+                                1) Human player
+                                2) Computer");
+            bool isValid = false;
+            while(!isValid)
+            {
+                string userInput = Console.ReadLine();
+                int oneOrTow; 
+                if(userInput == "1")
+                {
+                    oneOrTow = 1;
+                }else if(userInput == "2")
+                {
+                    oneOrTow = 2;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter 1 or 2 !");
+                }
+            }
         }
         
         internal static int getValidNumberInBoardRangeFromUser()
@@ -45,16 +64,6 @@ namespace ReverseTicTacToeGame
 
             return number;
         }
-        //
-        // public static bool WantAnotherGame()
-        // {
-        //     ///TODO
-        //     return false;
-        // }
-        //
-        // public static (int row, int column) getValidFormatOfSpot()
-        // {
-        //     throw new NotImplementedException();
-        // }
+
     }
 }
