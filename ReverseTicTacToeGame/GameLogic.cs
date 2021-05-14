@@ -122,12 +122,6 @@ namespace ReverseTicTacToeGame
             {
                 s_CurrentGameState = eGameState.Tie;
             }
-            else if(isQsignInPoint(i_LastPointEntered))
-            {
-                s_LoserPlayer = i_Player;
-                s_CurrentGameState = eGameState.Quit;
-            }
-           
             else
             {
                 s_CurrentGameState = eGameState.Playing;
@@ -139,15 +133,16 @@ namespace ReverseTicTacToeGame
             var random= new Random();
 
              int randomIndex = random.Next(0, s_GameBoard.FreeSpotsInBoard.Count);
-             (int row, int column) maybePoint = s_GameBoard.FreeSpotsInBoard.ElementAt(randomIndex);
-
-            while (!s_GameBoard.IsEmptySpot(maybePoint.row, maybePoint.column))
-            {
-                ///if enter here there is a bug.
+             (int, int)[] tempArr = s_GameBoard.FreeSpotsInBoard.ToArray();
+             (int row, int column) maybePoint = tempArr[randomIndex];
+            
+             while (!s_GameBoard.IsEmptySpot(maybePoint.row, maybePoint.column))
+             {
+                 ///if enter here there is a bug.
                 randomIndex = random.Next(0, s_GameBoard.FreeSpotsInBoard.Count);
-                maybePoint = s_GameBoard.FreeSpotsInBoard.ElementAt(randomIndex);
-            }
-            return maybePoint;
+                maybePoint = tempArr[randomIndex];
+             }
+             return maybePoint;
 
         }
          internal static void ClearBoardForAnotherGame()
@@ -246,8 +241,9 @@ namespace ReverseTicTacToeGame
      
         private static bool isQsignInPoint((int row, int column) i_Spot)
         {
-            return i_Spot.row == -1 && i_Spot.column == -1;
-
+            ///TODO
+            /// Check if Q has showed - for now we will define it at (-1,-1) point
+            throw new NotImplementedException();
         }
 
         public static bool isThisEmptySpot((int row, int column) i_ValidSpotInBoard)
@@ -257,7 +253,7 @@ namespace ReverseTicTacToeGame
 
         public static bool isInRangeOfBoard(int i_Number)
         {
-           return s_GameBoard.IsPointIsInRange(i_Number, i_Number);
+            throw new NotImplementedException();
         }
 
         internal static string ToStringBoard()
