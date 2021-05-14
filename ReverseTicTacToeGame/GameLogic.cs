@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Linq;
+using System.Text;
+
 namespace ReverseTicTacToeGame
 {
     internal class GameLogic
@@ -84,7 +86,7 @@ namespace ReverseTicTacToeGame
         public static void OneMoveInGame()
         {
             //eTurnOf currentPlaying = eTurnOf.Player1;
-            (int row, int column) point;
+            (int row, int column) point=(0, 0);
             Player[] players = { s_Player1, s_Player2 };
             foreach(Player player in players)
             {
@@ -95,7 +97,7 @@ namespace ReverseTicTacToeGame
                 }
                 else
                 {
-                    // point = getRandomPointForComputer();
+                    point = getRandomPointForComputer();
                 }
 
                 s_GameBoard.SetValueOnBoard(point.row, point.column, player.Sign);
@@ -115,12 +117,19 @@ namespace ReverseTicTacToeGame
             if(ThereIsWin(i_LastPointEntered, i_Player.Sign))
             {
                 s_LoserPlayer = i_Player;
-                
+                ///todo
+                /// updates number of wins
                 s_CurrentGameState = eGameState.Win;
             }
             else if(thereIsTie(i_LastPointEntered))
             {
                 s_CurrentGameState = eGameState.Tie;
+            }
+            else if(isQsignInPoint(i_LastPointEntered))
+            {
+                s_LoserPlayer = i_Player;
+                s_CurrentGameState = eGameState.Quit;
+
             }
             else
             {
@@ -133,15 +142,14 @@ namespace ReverseTicTacToeGame
             var random= new Random();
 
              int randomIndex = random.Next(0, s_GameBoard.FreeSpotsInBoard.Count);
-             (int, int)[] tempArr = s_GameBoard.FreeSpotsInBoard.ToArray();
-             (int row, int column) maybePoint = tempArr[randomIndex];
+             (int row, int column) maybePoint = s_GameBoard.FreeSpotsInBoard.ElementAt(randomIndex);
             
              while (!s_GameBoard.IsEmptySpot(maybePoint.row, maybePoint.column))
              {
                  ///if enter here there is a bug.
                 randomIndex = random.Next(0, s_GameBoard.FreeSpotsInBoard.Count);
-                maybePoint = tempArr[randomIndex];
-             }
+                maybePoint = s_GameBoard.FreeSpotsInBoard.ElementAt(randomIndex);
+            }
              return maybePoint;
 
         }
@@ -241,9 +249,8 @@ namespace ReverseTicTacToeGame
      
         private static bool isQsignInPoint((int row, int column) i_Spot)
         {
-            ///TODO
-            /// Check if Q has showed - for now we will define it at (-1,-1) point
-            throw new NotImplementedException();
+            return (i_Spot.row == 0) && (i_Spot.column==0) ;
+
         }
 
         public static bool isThisEmptySpot((int row, int column) i_ValidSpotInBoard)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
-
-namespace ReverseTicTacToeGame
+ 
+    namespace ReverseTicTacToeGame
 {
     internal static class UserInterface
     {
@@ -13,7 +13,8 @@ namespace ReverseTicTacToeGame
 
         public static void InitGame()
         {
-            //ToDo
+            Console.WriteLine("Hello and Welcome to our game!/n");
+
             int boardSize = ValiditionUi.GetValidBoardSize() + 1 ; /// we want board size +1 then what we got 
             bool player1IsComputer = false;
             bool player2IsComputer = ValiditionUi.IsPlayerIsComputer();
@@ -40,10 +41,10 @@ namespace ReverseTicTacToeGame
             }
         }
 
-        // TODO: IsUserWantAnotherGame() ask the user if want another game  
+        //  IsUserWantAnotherGame() ask the user if want another game  
         private static bool isUserWantAnotherGame()
         {
-            Console.WriteLine($"Do you want another game? please enter y/n");
+            Console.WriteLine($"Do you want another game? please enter 'y' for yes ,'n' for no");
 
             return getValidYesOrNo();
         }
@@ -121,14 +122,6 @@ namespace ReverseTicTacToeGame
             return (row, column);
         }
 
-       
-
-
-
-        public static void UpdateTheUserInterfaceTheNewState()
-        {
-            throw new NotImplementedException();
-        }
 
         public static void clearBoardBeforeNewMove()
         {
@@ -137,7 +130,7 @@ namespace ReverseTicTacToeGame
 
         public static void printBoard()
         {
-
+            Console.WriteLine(GameLogic.ToStringBoard());
         }
     }
 }

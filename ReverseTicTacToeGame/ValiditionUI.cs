@@ -8,7 +8,9 @@ namespace ReverseTicTacToeGame
         {
             //get number between 3-9
             //return number between 3-9 
-            throw new NotImplementedException();
+            Console.WriteLine("now enter the board size. please enter an integer between 3-9");
+            return getValidNumberInBoardRangeFromUser() +1 ;
+
         }
         //
         public static bool IsPlayerIsComputer()
