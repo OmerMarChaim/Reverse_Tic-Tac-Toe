@@ -17,6 +17,8 @@ namespace ReverseTicTacToeGame
         private const char k_Circle = 'O';
         private const char k_Cross = 'X';
         private static int[,] checkWinTable;
+        private const int k_MinBoardSize = 3;
+        private const int k_MaxBoardSize = 9;
 
         internal enum eTurnOf
         {
@@ -260,34 +262,11 @@ namespace ReverseTicTacToeGame
 
         public static bool isInRangeOfBoard(int i_Number)
         {
-            throw new NotImplementedException();
+            return (i_Number >= k_MinBoardSize && i_Number <= k_MaxBoardSize) ;
+
         }
 
-        internal static string ToStringBoard()
-        {
-            Board currentGameBoard = GameLogic.GameBoard;
-            StringBuilder resultedString = new StringBuilder();
-            for(int i = 0; i < currentGameBoard.Size; i++)
-            {
-                resultedString.Append("  {i}  ");
-            }
-            for(int row = 1; row < currentGameBoard.Size; row++)
-            {
-                resultedString.Append($"{row}");
-                for(int col = 1; col < currentGameBoard.Size; col++)
-                {
-                    resultedString.Append($"|  {currentGameBoard.GameBoard[row, col]}  |");
-                }
-
-                resultedString.AppendLine();
-                for(int col = 1; col < currentGameBoard.Size - 1; col++)
-                {
-                    resultedString.Append($"=====");
-                }
-            }
-
-            return resultedString.ToString();
-        }
+  
     }
 }
 

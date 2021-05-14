@@ -13,9 +13,9 @@ using System.Text;
 
         public static void InitGame()
         {
-            Console.WriteLine("Hello and Welcome to our game!/n");
+            Console.WriteLine("Hello and Welcome to our game!");
 
-            int boardSize = ValiditionUi.GetValidBoardSize() + 1 ; /// we want board size +1 then what we got 
+            int boardSize = ValiditionUi.GetValidBoardSize() +1; /// we want board size +1 then what we got 
             bool player1IsComputer = false;
             bool player2IsComputer = ValiditionUi.IsPlayerIsComputer();
             GameLogic game = new GameLogic( boardSize  , player1IsComputer, player2IsComputer);
@@ -129,7 +129,7 @@ using System.Text;
 
         public static void printBoard()
         {
-            Console.WriteLine(GameLogic.ToStringBoard());
+            Console.WriteLine(GameLogic.GameBoard.BoardToSting);
         }
     }
 }

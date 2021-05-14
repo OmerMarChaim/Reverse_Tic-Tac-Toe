@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Text;
+
 namespace ReverseTicTacToeGame
 {
     internal class Board
@@ -16,7 +18,7 @@ namespace ReverseTicTacToeGame
         {
             r_Size = i_Size;
             m_Board = new char[i_Size, i_Size];
-
+            m_FreeSpots=new HashSet<(int, int)>();
             for(int i = 1; i < i_Size; i++)
             {
                 for(int j = 0; j < i_Size; j++)
@@ -39,8 +41,10 @@ namespace ReverseTicTacToeGame
             get { return m_Board; }
             set { m_Board = value; }
         }
-
-
+        public string BoardToSting
+        {
+            get { return ToStringBoard(); }
+        }
         internal void SetValueOnBoard(int i_Row, int i_Column, char i_Symbol)
         {
 
@@ -72,10 +76,34 @@ namespace ReverseTicTacToeGame
             // check if the m_FreeSpots is empty
             return false;
         }
-        
-        
-        
-        
+        internal static string ToStringBoard()
+        {
+
+            StringBuilder resultedString = new StringBuilder();
+            for (int i = 0; i < m_Board.Length ; i++)
+            {
+                resultedString.Append("  {i}  ");
+            }
+            for (int row = 1; row < m_Board.Length-1; row++)
+            {
+                resultedString.Append($"{row}");
+                for (int col = 1; col < m_Board.Length-1; col++)
+                {
+                    resultedString.Append($"|  {m_Board[row, col]}  |");
+                }
+
+                resultedString.AppendLine();
+                for (int col = 1; col < m_Board.Length - 1; col++)
+                {
+                    resultedString.Append($"=====");
+                }
+            }
+
+            return resultedString.ToString();
+        }
+
+
+
         //
         //constructor of the object board ,include :
         // 1. matrix in between 3-9 cells - V
