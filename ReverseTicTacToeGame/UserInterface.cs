@@ -122,7 +122,6 @@ using System.Text;
             return (row, column);
         }
 
-
         public static void clearBoardBeforeNewMove()
         {
             Ex02.ConsoleUtils.Screen.Clear();
