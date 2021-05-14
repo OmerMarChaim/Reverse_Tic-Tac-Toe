@@ -124,7 +124,8 @@ using System.Text;
 
         public static void clearBoardBeforeNewMove()
         {
-            Ex02.ConsoleUtils.Screen.Clear();
+            // Ex02.ConsoleUtils.Screen.Clear();
+            Console.WriteLine("Clear!");
         }
 
         public static void printBoard()

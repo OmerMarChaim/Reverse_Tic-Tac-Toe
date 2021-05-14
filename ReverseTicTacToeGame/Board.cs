@@ -61,7 +61,7 @@ namespace ReverseTicTacToeGame
 
         internal bool IsEmptySpot(int i_Row, int i_Column)
         {
-            return m_Board[i_Row,i_Column] == null ;
+            return m_Board[i_Row,i_Column] == (char)0 ;
         }
 
         internal bool IsPointIsInRange(int i_Row, int i_Column)
@@ -76,27 +76,32 @@ namespace ReverseTicTacToeGame
             // check if the m_FreeSpots is empty
             return false;
         }
-        internal static string ToStringBoard()
+        internal string ToStringBoard()
         {
 
             StringBuilder resultedString = new StringBuilder();
-            for (int i = 0; i < m_Board.Length ; i++)
+            for (int i = 1; i < this.r_Size ; i++)
             {
-                resultedString.Append("  {i}  ");
+                resultedString.Append($"  {i}  ");
             }
-            for (int row = 1; row < m_Board.Length-1; row++)
+
+            resultedString.AppendLine();
+            for (int row = 1; row < r_Size ; row++)
             {
-                resultedString.Append($"{row}");
-                for (int col = 1; col < m_Board.Length-1; col++)
+                resultedString.Append($"{row}|");
+                for (int col = 1; col < r_Size ; col++)
                 {
-                    resultedString.Append($"|  {m_Board[row, col]}  |");
+                    resultedString.Append($"  {m_Board[row, col]}  |");
                 }
 
-                resultedString.AppendLine();
-                for (int col = 1; col < m_Board.Length - 1; col++)
+                resultedString.AppendLine("");
+                resultedString.Append("  ");
+                for (int col = 1; col < r_Size; col++)
                 {
                     resultedString.Append($"=====");
                 }
+
+                resultedString.AppendLine();
             }
 
             return resultedString.ToString();
