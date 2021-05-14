@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace ReverseTicTacToeGame
 {
@@ -14,7 +15,7 @@ namespace ReverseTicTacToeGame
         {
             //ToDo
             int boardSize = ValiditionUi.GetValidBoardSize() + 1 ; /// we want board size +1 then what we got 
-            bool player1IsComputer = ValiditionUi.IsPlayerIsComputer();
+            bool player1IsComputer = false;
             bool player2IsComputer = ValiditionUi.IsPlayerIsComputer();
             GameLogic game = new GameLogic( boardSize  , player1IsComputer, player2IsComputer);
             startGame();
@@ -70,7 +71,6 @@ namespace ReverseTicTacToeGame
         private static void updateTheUserInterfaceAccordingTheState()
         {
             GameLogic.eGameState currentState = GameLogic.CurrentGameState;
-            //switch(currentState)
             char signOfTheWinner = GameLogic.WinnerPlayer.Sign;
 
             if (currentState == GameLogic.eGameState.Win)
@@ -83,7 +83,6 @@ namespace ReverseTicTacToeGame
             }
             else if(currentState == GameLogic.eGameState.Quit)
             {
-            
                 PrintQuitMessage(signOfTheWinner);
             }
 
@@ -105,58 +104,26 @@ namespace ReverseTicTacToeGame
 
         internal static void PrintWinMessage(char i_SignOfTheWinner)
         {
-            Console.WriteLine($"Well done! The winner is {i_SignOfTheWinner}");
+            Console.WriteLine($"Well done! The winner in this round is the player that play with the sign:{i_SignOfTheWinner}");
         }
 
         internal static void PrintQuitMessage(char i_SignOfTheWinner)
         {
-            ///need to add
-            Console.WriteLine($"The winner is {i_SignOfTheWinner} after the other player quit");
+            Console.WriteLine($"You Quit from the Game! The winner in this round is the player that play with the sign:{i_SignOfTheWinner}");
         }
 
         internal static (int, int) GetValidPointFromUser()
         {
-            (int row, int column) spotInValidFormatUI = ValiditionUi.getValidFormatOfSpot();
-            bool isValidSpotOnBoard = false;
-
             Console.WriteLine($"Please enter one digit number as row spot for your next move:");
-            int row = getValidNumberInBoardRangeFromUser();
+            int row = ValiditionUi.getValidNumberInBoardRangeFromUser();
             Console.WriteLine($"Please enter one digit number as column spot for your next move:");
-            int column = getValidNumberInBoardRangeFromUser();
+            int column = ValiditionUi.getValidNumberInBoardRangeFromUser();
             return (row, column);
         }
 
        
 
-        private static int getValidNumberInBoardRangeFromUser()
-        {
-            bool isValidNumberFormat = false;
-            bool isValidRange = false;
-            isValidNumberFormat = false;
-            int number = 0;
-            string userInput = Console.ReadLine();
-            isValidNumberFormat = int.TryParse(userInput, out number);
-            isValidRange = GameLogic.isInRangeOfBoard(number);
-            while(!isValidNumberFormat || !isValidRange)
-            {
-                if(!isValidNumberFormat)
-                {
-                    Console.WriteLine("Your input is not a one digit number, try again");
-                    userInput = Console.ReadLine();
-                    isValidNumberFormat = int.TryParse(userInput, out number);
-                    isValidRange = GameLogic.isInRangeOfBoard(number);
-                }
-                else if(!isValidRange)
-                {
-                    Console.WriteLine($"Your input is not in range 1 - {GameLogic.GameBoard.Size - 1}, try again");
-                    Console.Read();
-                    isValidNumberFormat = int.TryParse(userInput, out number);
-                    isValidRange = GameLogic.isInRangeOfBoard(number);
-                }
-            }
 
-            return number;
-        }
 
         public static void UpdateTheUserInterfaceTheNewState()
         {
@@ -165,12 +132,12 @@ namespace ReverseTicTacToeGame
 
         public static void clearBoardBeforeNewMove()
         {
-            throw new NotImplementedException();
+            Ex02.ConsoleUtils.Screen.Clear();
         }
 
         public static void printBoard()
         {
-            throw new NotImplementedException();
+
         }
     }
 }
