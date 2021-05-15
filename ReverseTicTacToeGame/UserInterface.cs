@@ -123,8 +123,8 @@ namespace ReverseTicTacToeGame
             bool isValidPoint = false;
             int row = 0;
             int column = 0;
-            Console.WriteLine($"{i_PlayerSign} :this is your turn!"
-                              + $"Please enter one digit number as row and then column for your next move :");
+            Console.WriteLine($@"{i_PlayerSign} :this is your turn ! 
+Please enter one digit number as row and then column for your next move :");
 
             while (!isValidPoint)
             {

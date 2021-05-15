@@ -261,9 +261,15 @@ namespace ReverseTicTacToeGame
             return GameLogic.GameBoard.IsFull();
         }
 
+        /// <summary>
+        /// we decided that point (-1,-1) will be the sign og Q from the UI ,
+        /// Offcourse that (-1,-1) is not valid at any board game
+        /// </summary>
+        /// <param name="i_Spot"></param>
+        /// <returns></returns>
         internal static bool isQsignInPoint((int row, int column) i_Spot)
         {
-            bool isQsignInPoint = (i_Spot.row == 0) && (i_Spot.column == 0);
+            bool isQsignInPoint = (i_Spot.row == -1) && (i_Spot.column == -1);
 
             return isQsignInPoint;
         }
