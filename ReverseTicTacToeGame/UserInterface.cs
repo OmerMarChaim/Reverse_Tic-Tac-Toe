@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
- 
-    namespace ReverseTicTacToeGame
+
+namespace ReverseTicTacToeGame
 {
     internal static class UserInterface
     {
@@ -15,29 +15,28 @@ using System.Text;
         {
             Console.WriteLine("Hello and Welcome to our game!");
 
-            int boardSize = ValiditionUi.GetValidBoardSize() +1; /// we want board size +1 then what we got 
+            int boardSize = ValiditionUi.GetValidBoardSize() + 1; /// we want board size +1 then what we got 
             bool player1IsComputer = false;
             bool player2IsComputer = ValiditionUi.IsPlayerIsComputer();
-            GameLogic game = new GameLogic( boardSize  , player1IsComputer, player2IsComputer);
+            GameLogic game = new GameLogic(boardSize, player1IsComputer, player2IsComputer);
             startGame();
         }
 
         private static void startGame()
         {
-            bool wantAnotherGameFlag = true;
+            bool wantAnotherGame = true;
 
             //eTurnOf currentPlaying = eTurnOf.Player1;
-            (int, int) point;
-            while(wantAnotherGameFlag == true)
+            // (int, int) point;
+            while(wantAnotherGame)
             {
                 while(GameLogic.CurrentGameState == GameLogic.eGameState.Playing)
                 {
                     GameLogic.OneMoveInGame();
-
                 }
 
                 updateTheUserInterfaceAccordingTheState(); // win/tie? "msg" ->> score 
-                wantAnotherGameFlag = isUserWantAnotherGame(); // ->> Do you want Another game? please press y/n
+                wantAnotherGame = isUserWantAnotherGame(); // ->> Do you want Another game? please press y/n
             }
         }
 
@@ -74,7 +73,7 @@ using System.Text;
             GameLogic.eGameState currentState = GameLogic.CurrentGameState;
             char signOfTheWinner = GameLogic.WinnerPlayer.Sign;
 
-            if (currentState == GameLogic.eGameState.Win)
+            if(currentState == GameLogic.eGameState.Win)
             {
                 PrintWinMessage(signOfTheWinner);
             }
@@ -96,8 +95,6 @@ using System.Text;
                 $"The current score is:{GameLogic.Player1.Sign}:{GameLogic.Player1.NumberOfWins}, {GameLogic.Player2.Sign}:{GameLogic.Player2.NumberOfWins}");
         }
 
- 
-
         public static void PrintTieMessage()
         {
             Console.WriteLine($"No one is going to win this game, there's a tie! This game is over without winner.");
@@ -105,20 +102,29 @@ using System.Text;
 
         internal static void PrintWinMessage(char i_SignOfTheWinner)
         {
-            Console.WriteLine($"Well done! The winner in this round is the player that play with the sign:{i_SignOfTheWinner}");
+            Console.WriteLine(
+                $"Well done! The winner in this round is the player that play with the sign:{i_SignOfTheWinner}");
         }
 
         internal static void PrintQuitMessage(char i_SignOfTheWinner)
         {
-            Console.WriteLine($"You Quit from the Game! The winner in this round is the player that play with the sign:{i_SignOfTheWinner}");
+            Console.WriteLine(
+                $"You Quit from the Game! The winner in this round is the player that play with the sign:{i_SignOfTheWinner}");
         }
 
-        internal static (int, int) GetValidPointFromUser()
+        internal static (int, int) GetValidPointFromUser(char i_PlayerSign)
         {
-            Console.WriteLine($"Please enter one digit number as row spot for your next move:");
-            int row = ValiditionUi.getValidNumberInBoardRangeFromUser(1, GameLogic.GameBoard.Size);
-            Console.WriteLine($"Please enter one digit number as column spot for your next move:");
-            int column = ValiditionUi.getValidNumberInBoardRangeFromUser(1, GameLogic.GameBoard.Size);
+            bool isValidPoint = false;
+            int row = 0;
+            int column = 0;
+            while(!isValidPoint)
+            {
+                Console.WriteLine($"{i_PlayerSign} : Please enter one digit number as row spot for your next move:");
+                row = ValiditionUi.getValidNumberInBoardRangeFromUser();
+                Console.WriteLine($"{i_PlayerSign} : Please enter one digit number as column spot for your next move:");
+                column = ValiditionUi.getValidNumberInBoardRangeFromUser();
+                isValidPoint = GameLogic.IsValidSpot(row, column);
+            }
             return (row, column);
         }
 
@@ -134,4 +140,3 @@ using System.Text;
         }
     }
 }
-

@@ -13,6 +13,9 @@ namespace ReverseTicTacToeGame
         HashSet<(int, int)> m_FreeSpots;
         private const int k_MinBoardSize = 3;
         private const int k_MaxBoardSize = 9;
+        internal const char k_Empty = (char)0;
+        private const char k_Circle = 'O';
+        private const char k_Cross = 'X';
 
         public Board(int i_Size)
         {
@@ -46,36 +49,17 @@ namespace ReverseTicTacToeGame
             get { return ToStringBoard(); }
         }
         internal void SetValueOnBoard(int i_Row, int i_Column, char i_Symbol)
-        {
-
-            if (IsEmptySpot(i_Row, i_Column)==true && IsPointIsInRange(i_Row,i_Column)==true)
-            {
-                m_Board[i_Row, i_Column] = i_Symbol;
-
-            }
-
+        { 
+            m_Board[i_Row, i_Column] = i_Symbol;
             m_FreeSpots.Remove((i_Row, i_Column));
-
-
         }
 
         internal bool IsEmptySpot(int i_Row, int i_Column)
         {
-            return m_Board[i_Row,i_Column] == (char)0 ;
+            bool isEmptySpot = m_Board[i_Row, i_Column] == (char)0;
+            return isEmptySpot;
         }
 
-        internal bool IsPointIsInRange(int i_Row, int i_Column)
-        {
-            
-            return (i_Row>=k_MinBoardSize && i_Row<=k_MaxBoardSize) && (i_Column >= k_MinBoardSize && i_Column <= k_MaxBoardSize);
-        }
-
-        internal static bool IsFull()
-        {
-            // TODO
-            // check if the m_FreeSpots is empty
-            return false;
-        }
         internal string ToStringBoard()
         {
 
@@ -91,7 +75,16 @@ namespace ReverseTicTacToeGame
                 resultedString.Append($"{row}|");
                 for (int col = 1; col < r_Size ; col++)
                 {
-                    resultedString.Append($"  {m_Board[row, col]}  |");
+                    char current = m_Board[row, col];
+                    if(current == k_Empty)
+                    {
+                        resultedString.Append($"  {current} |");    
+                    }
+                    else
+                    {
+                        resultedString.Append($" {current} |");
+                    }
+                    
                 }
 
                 resultedString.AppendLine("");
@@ -107,33 +100,10 @@ namespace ReverseTicTacToeGame
             return resultedString.ToString();
         }
 
-
-
-        //
-        //constructor of the object board ,include :
-        // 1. matrix in between 3-9 cells - V
-        // 2. array with empty places - V
-        // 3. size of the metrix - V
-        // 4. print board - 
-        //
-        //method to write X or O to the place we need on the board?
-        //
-        //  clear the board for new game
-        // internal | public | private - V 
-        // readonly - V
+        internal bool IsFull()
+        {
+            return this.m_FreeSpots.Count == 0;
+        }
 
     }
 }
-
-//// gameLogic :
-/// 1. board
-/// 2. validation
-/// 3. game logic and stats
-///
-///
-/// ui:
-/// 1. gamemanger
-/// 2.
-///
-
-/// 
