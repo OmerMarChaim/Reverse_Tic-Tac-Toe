@@ -59,7 +59,7 @@ namespace ReverseTicTacToeGame
             bool isValid = false;
             while(!isValid)
             {
-                
+                userInput = Console.ReadLine();
                 if(userInput == "y" || userInput == "n")
                 {
                     isValid = true;
