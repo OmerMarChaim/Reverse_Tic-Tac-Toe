@@ -47,29 +47,34 @@ namespace ReverseTicTacToeGame
         //  IsUserWantAnotherGame() ask the user if want another game  
         private static bool isUserWantAnotherGame()
         {
-            Console.WriteLine($"Do you want another game? please enter 'y' for yes ,'n' for no");
+            Console.WriteLine($"Do you want another game? please enter 'Y' for yes ,'Q' for Quit");
 
             return getValidYesOrNo();
         }
 
         private static bool getValidYesOrNo()
         {
-            string userInput = Console.ReadLine();
+            string userInput;
             bool yesOrNoFlag = false;
             bool isValid = false;
             while(!isValid)
             {
                 userInput = Console.ReadLine();
-                if(userInput == "y" || userInput == "n")
+                if(userInput == "Y" || userInput == "Q")
                 {
                     isValid = true;
-                    if(userInput == "y")
+                    if(userInput == "Y")
                     {
                         yesOrNoFlag = true;
                     }
+
+                    if(yesOrNoFlag == false)
+                    { 
+                        Console.WriteLine("Thank you for playing with us! see you in Ex03");
+                    }
                     break;
                 }
-                Console.WriteLine("Your input is invalid. if you want to play more enter 'y', other 'n'");
+                Console.WriteLine("Your input is invalid. if you want to play more enter 'Y', other 'Q'");
             }
 
             return yesOrNoFlag;
