@@ -102,8 +102,7 @@ namespace ReverseTicTacToeGame
 
         internal static void PrintWinMessage(char i_SignOfTheWinner)
         {
-            Console.WriteLine(
-                $"Well done! The winner in this round is the player that play with the sign:{i_SignOfTheWinner}");
+            Console.WriteLine($"Well done! The winner in this round is the player that play with the sign: {i_SignOfTheWinner}");
         }
 
         internal static void PrintQuitMessage(char i_SignOfTheWinner)
@@ -117,13 +116,22 @@ namespace ReverseTicTacToeGame
             bool isValidPoint = false;
             int row = 0;
             int column = 0;
-            while(!isValidPoint)
+            Console.WriteLine($"{i_PlayerSign} :this is your turn!"
+                              + $"Please enter one digit number as row and then column for your next move :");
+
+            while (!isValidPoint)
             {
-                Console.WriteLine($"{i_PlayerSign} : Please enter one digit number as row spot for your next move:");
+                Console.WriteLine($"{i_PlayerSign} : Please enter row number:");
                 row = ValiditionUi.getValidNumberInBoardRangeFromUser();
-                Console.WriteLine($"{i_PlayerSign} : Please enter one digit number as column spot for your next move:");
+                Console.WriteLine($"{i_PlayerSign} : Please enter column number:");
                 column = ValiditionUi.getValidNumberInBoardRangeFromUser();
-                isValidPoint = GameLogic.IsValidSpot(row, column);
+                isValidPoint = GameLogic.IsEmptySpot(row, column);
+                if(isValidPoint == false)
+                {
+                    Console.WriteLine($"{i_PlayerSign} : Sorry , this spot is not empty, please choose a new one! "
+                                      + $"we remind you to choose one digit number as row and then column for your next move ");
+
+                }
             }
             return (row, column);
         }

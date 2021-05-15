@@ -104,19 +104,12 @@ namespace ReverseTicTacToeGame
             }
         }
 
-        private static void updateStateOfGame((int row, int column) i_LastPointEntered, Player i_Loser)
+        private static void updateStateOfGame((int row, int column) i_LastPointEntered, Player i_Player)
         {
-            if(ThereIsWin(i_LastPointEntered, i_Loser.Sign))
+            if(ThereIsWin(i_LastPointEntered, i_Player.Sign))
             {
-                if(i_Loser.Sign == s_Player1.Sign)
-                {
-                    s_Player1.NumberOfWins++;
-                }
-                else
-                {
-                    s_Player2.NumberOfWins++;
-                }
-
+                
+                updateWinnerStatistics(i_Player);
                 s_CurrentGameState = eGameState.Win;
             }
             else if(thereIsTie(i_LastPointEntered))
@@ -125,11 +118,27 @@ namespace ReverseTicTacToeGame
             }
             else if(isQsignInPoint(i_LastPointEntered))
             {
+                updateWinnerStatistics(i_Player);
                 s_CurrentGameState = eGameState.Quit;
             }
             else
             {
                 s_CurrentGameState = eGameState.Playing;
+            }
+        }
+
+        private static void updateWinnerStatistics(Player i_LoserPlayer)
+        {
+            if (i_LoserPlayer.Sign == s_Player1.Sign)
+            {
+                s_Player2.NumberOfWins++;
+                s_WinnerPlayer = s_Player2;
+             
+            }
+            else
+            {
+                s_Player1.NumberOfWins++;
+                s_WinnerPlayer = s_Player1;
             }
         }
 
@@ -150,7 +159,7 @@ namespace ReverseTicTacToeGame
             return testedPoint;
         }
 
-        internal static void CreatNewBoardForAnotherGame()
+        internal static void CreateNewBoardForAnotherGame()
         {
             int boardSize = s_GameBoard.Size;
             s_GameBoard.GameBoard = new char[boardSize, boardSize];
@@ -177,9 +186,9 @@ namespace ReverseTicTacToeGame
                == s_GameBoard
                    .Size) ///in squere matrix -the anti daigonal the sum of row and column equal to the matrix size+1
             {
-                for(int i = 0; i < s_GameBoard.Size; i++)
+                for(int i = 1; i < s_GameBoard.Size-1; i++)
                 {
-                    if(s_GameBoard.GameBoard[i + 1, s_GameBoard.Size - i] == i_PlayerSign)
+                    if(s_GameBoard.GameBoard[i , s_GameBoard.Size -i] == i_PlayerSign)
                     {
                         counter++;
                     }
@@ -275,7 +284,7 @@ namespace ReverseTicTacToeGame
 
         internal static bool IsValidSpot(int i_Row, int i_Col)
         {
-            bool isValidSpot = IsEmptySpot(i_Row, i_Col);
+            bool isValidSpot = IsEmptySpot(i_Row, i_Col) ;
 
             return isValidSpot;
         }
