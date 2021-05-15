@@ -24,11 +24,11 @@ namespace ReverseTicTacToeGame
 
         private static void startGame()
         {
-            bool wantAnotherGame = true;
+            bool wantAnotherGameFlag = true;
 
             //eTurnOf currentPlaying = eTurnOf.Player1;
             // (int, int) point;
-            while(wantAnotherGame)
+            while(wantAnotherGameFlag)
             {
                 while(GameLogic.CurrentGameState == GameLogic.eGameState.Playing)
                 {
@@ -36,7 +36,11 @@ namespace ReverseTicTacToeGame
                 }
 
                 updateTheUserInterfaceAccordingTheState(); // win/tie? "msg" ->> score 
-                wantAnotherGame = isUserWantAnotherGame(); // ->> Do you want Another game? please press y/n
+                wantAnotherGameFlag = isUserWantAnotherGame(); // ->> Do you want Another game? please press y/n
+                if(wantAnotherGameFlag)
+                {
+                    GameLogic.WantAnotherGame();
+                }
             }
         }
 
@@ -50,11 +54,12 @@ namespace ReverseTicTacToeGame
 
         private static bool getValidYesOrNo()
         {
+            string userInput = Console.ReadLine();
             bool yesOrNoFlag = false;
             bool isValid = false;
             while(!isValid)
             {
-                string userInput = Console.ReadLine();
+                
                 if(userInput == "y" || userInput == "n")
                 {
                     isValid = true;
@@ -62,7 +67,9 @@ namespace ReverseTicTacToeGame
                     {
                         yesOrNoFlag = true;
                     }
+                    break;
                 }
+                Console.WriteLine("Your input is invalid. if you want to play more enter 'y', other 'n'");
             }
 
             return yesOrNoFlag;
@@ -92,7 +99,7 @@ namespace ReverseTicTacToeGame
         private static void printScore()
         {
             Console.WriteLine(
-                $"The current score is:{GameLogic.Player1.Sign}:{GameLogic.Player1.NumberOfWins}, {GameLogic.Player2.Sign}:{GameLogic.Player2.NumberOfWins}");
+                $"The current score is: {GameLogic.Player1.Sign}:{GameLogic.Player1.NumberOfWins}, {GameLogic.Player2.Sign}:{GameLogic.Player2.NumberOfWins}");
         }
 
         public static void PrintTieMessage()
@@ -122,14 +129,14 @@ namespace ReverseTicTacToeGame
             while (!isValidPoint)
             {
                 Console.WriteLine($"{i_PlayerSign} : Please enter row number:");
-                row = ValiditionUi.getValidNumberInBoardRangeFromUser();
+                row = ValiditionUi.GetValidNumberInBoardRangeFromUser();
                 if(row == -1)
                 {
                     column = -1;
                     break;
                 }
                 Console.WriteLine($"{i_PlayerSign} : Please enter column number:");
-                column = ValiditionUi.getValidNumberInBoardRangeFromUser();
+                column = ValiditionUi.GetValidNumberInBoardRangeFromUser();
                 if (column == -1)
                 {
                     row = -1;

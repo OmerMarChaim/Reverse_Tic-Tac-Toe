@@ -72,7 +72,7 @@ namespace ReverseTicTacToeGame
             StringBuilder resultedString = new StringBuilder();
             for (int i = 1; i < this.r_Size ; i++)
             {
-                resultedString.Append($"  {i}  ");
+                resultedString.Append($"  {i} ");
             }
 
             resultedString.AppendLine();

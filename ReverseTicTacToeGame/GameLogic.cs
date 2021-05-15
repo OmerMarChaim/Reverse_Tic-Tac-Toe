@@ -295,5 +295,11 @@ namespace ReverseTicTacToeGame
 
             return isValidSizeBoard;
         }
+
+        internal static void WantAnotherGame()
+        {
+            CurrentGameState = eGameState.Playing;
+            CreateNewBoardForAnotherGame();
+        }
     }
 }

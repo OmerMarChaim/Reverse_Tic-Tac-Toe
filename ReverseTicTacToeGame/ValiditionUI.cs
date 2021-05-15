@@ -9,16 +9,16 @@ namespace ReverseTicTacToeGame
             //get number between 3-9
             //return number between 3-9 
             Console.WriteLine("Please enter the board size - an integer between 3-9");
-            return getValidSizeBoardFromUser() ;
+            return GetValidSizeBoardFromUser() ;
 
         }
         //
         public static bool IsPlayerIsComputer()
         {
             bool isComputer = false;
-            Console.WriteLine(@"Please choose how is you rival:
-                                1) Human player
-                                2) Computer");
+            Console.WriteLine(@"Please choose who is you rival:
+1) Human player
+2) Computer");
             bool isValid = false;
             while(!isValid)
             {
@@ -42,7 +42,7 @@ namespace ReverseTicTacToeGame
             return isComputer;
         }
         
-        internal static int getValidNumberInBoardRangeFromUser()
+        internal static int GetValidNumberInBoardRangeFromUser()
         {
             bool isValidNumberFormat = true;
             bool isValidRange = true;
@@ -76,7 +76,7 @@ namespace ReverseTicTacToeGame
             return number;
         }
 
-        internal static int getValidSizeBoardFromUser()
+        internal static int GetValidSizeBoardFromUser()
         {
             bool isValidNumberFormat = false;
             bool isValidRange = false;
