@@ -123,8 +123,18 @@ namespace ReverseTicTacToeGame
             {
                 Console.WriteLine($"{i_PlayerSign} : Please enter row number:");
                 row = ValiditionUi.getValidNumberInBoardRangeFromUser();
+                if(row == -1)
+                {
+                    column = -1;
+                    break;
+                }
                 Console.WriteLine($"{i_PlayerSign} : Please enter column number:");
                 column = ValiditionUi.getValidNumberInBoardRangeFromUser();
+                if (column == -1)
+                {
+                    row = -1;
+                    break;
+                }
                 isValidPoint = GameLogic.IsEmptySpot(row, column);
                 if(isValidPoint == false)
                 {

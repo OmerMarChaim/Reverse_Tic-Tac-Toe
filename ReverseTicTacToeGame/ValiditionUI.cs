@@ -44,13 +44,20 @@ namespace ReverseTicTacToeGame
         
         internal static int getValidNumberInBoardRangeFromUser()
         {
-            bool isValidNumberFormat = false;
-            bool isValidRange = false;
-            isValidNumberFormat = false;
+            bool isValidNumberFormat = true;
+            bool isValidRange = true;
+            
             int number = 0;
             string userInput = Console.ReadLine();
-            isValidNumberFormat = int.TryParse(userInput, out number);
-            isValidRange = GameLogic.isInBoradRangeSize(number);
+            if(userInput=="q" || userInput == "Q")
+            {
+                number = -1;
+            }
+            else
+            {
+                isValidNumberFormat = int.TryParse(userInput, out number);
+                isValidRange = GameLogic.isInBoradRangeSize(number);
+            }
             while(!isValidNumberFormat || !isValidRange)
             {
                 if(!isValidNumberFormat)
@@ -90,7 +97,7 @@ namespace ReverseTicTacToeGame
                 }
                 userInput = Console.ReadLine();
                 isValidNumberFormat = int.TryParse(userInput, out number);
-                isValidRange = GameLogic.isInBoradRangeSize(number);
+                isValidRange = GameLogic.isValidSizeBoard(number);
             }
 
             return number;

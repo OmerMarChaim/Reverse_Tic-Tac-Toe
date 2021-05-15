@@ -16,6 +16,7 @@ namespace ReverseTicTacToeGame
         internal const char k_Empty = (char)0;
         private const char k_Circle = 'O';
         private const char k_Cross = 'X';
+        private const int Q_sign = -1;
 
         public Board(int i_Size)
         {
@@ -24,7 +25,7 @@ namespace ReverseTicTacToeGame
             m_FreeSpots=new HashSet<(int, int)>();
             for(int i = 1; i < i_Size; i++)
             {
-                for(int j = 0; j < i_Size; j++)
+                for(int j = 1; j < i_Size; j++)
                 {
                     m_FreeSpots.Add((i, j));
                 }
@@ -48,10 +49,15 @@ namespace ReverseTicTacToeGame
         {
             get { return ToStringBoard(); }
         }
+
         internal void SetValueOnBoard(int i_Row, int i_Column, char i_Symbol)
-        { 
-            m_Board[i_Row, i_Column] = i_Symbol;
-            m_FreeSpots.Remove((i_Row, i_Column));
+        {
+            if(i_Row != Q_sign && i_Column != Q_sign)
+            {
+                m_Board[i_Row, i_Column] = i_Symbol;
+                m_FreeSpots.Remove((i_Row, i_Column));
+
+            }
         }
 
         internal bool IsEmptySpot(int i_Row, int i_Column)

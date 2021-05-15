@@ -84,7 +84,8 @@ namespace ReverseTicTacToeGame
             Player[] players = { s_Player1, s_Player2 };
             foreach(Player player in players)
             {
-                if(!player.IsComputer)
+                UserInterface.printBoard();
+                if (!player.IsComputer)
                 {
                     point = UserInterface.GetValidPointFromUser(player.Sign); // the slot is inrange and free   
                 }
@@ -96,7 +97,7 @@ namespace ReverseTicTacToeGame
                 s_GameBoard.SetValueOnBoard(point.row, point.column, player.Sign);
                 updateStateOfGame(point, player);
                 UserInterface.clearBoardBeforeNewMove();
-                UserInterface.printBoard();
+           
                 if(s_CurrentGameState != eGameState.Playing)
                 {
                     break;
@@ -106,25 +107,26 @@ namespace ReverseTicTacToeGame
 
         private static void updateStateOfGame((int row, int column) i_LastPointEntered, Player i_Player)
         {
-            if(ThereIsWin(i_LastPointEntered, i_Player.Sign))
-            {
+             if (isQsignInPoint(i_LastPointEntered))
+             {
+                 updateWinnerStatistics(i_Player);
+                 s_CurrentGameState = eGameState.Quit;
+             }
+             else if (ThereIsWin(i_LastPointEntered, i_Player.Sign))
+             {
                 
-                updateWinnerStatistics(i_Player);
-                s_CurrentGameState = eGameState.Win;
-            }
-            else if(thereIsTie(i_LastPointEntered))
-            {
-                s_CurrentGameState = eGameState.Tie;
-            }
-            else if(isQsignInPoint(i_LastPointEntered))
-            {
-                updateWinnerStatistics(i_Player);
-                s_CurrentGameState = eGameState.Quit;
-            }
-            else
-            {
-                s_CurrentGameState = eGameState.Playing;
-            }
+                 updateWinnerStatistics(i_Player);
+                 s_CurrentGameState = eGameState.Win;
+             }
+             else if(thereIsTie(i_LastPointEntered))
+             {
+                 s_CurrentGameState = eGameState.Tie;
+             }
+          
+             else
+             {
+                 s_CurrentGameState = eGameState.Playing;
+             }
         }
 
         private static void updateWinnerStatistics(Player i_LoserPlayer)
@@ -182,11 +184,9 @@ namespace ReverseTicTacToeGame
         {
             int counter = 0;
 
-            if(i_Point.row + i_Point.column
-               == s_GameBoard
-                   .Size) ///in squere matrix -the anti daigonal the sum of row and column equal to the matrix size+1
-            {
-                for(int i = 1; i < s_GameBoard.Size-1; i++)
+                ///in squere matrix -the anti daigonal the sum of row and column equal to the matrix size+1
+            
+                for(int i = 1; i <= s_GameBoard.Size-1; i++)
                 {
                     if(s_GameBoard.GameBoard[i , s_GameBoard.Size -i] == i_PlayerSign)
                     {
@@ -197,7 +197,7 @@ namespace ReverseTicTacToeGame
                         break;
                     }
                 }
-            }
+            
 
             return counter == i_NumberOfSignsToWin;
         }
