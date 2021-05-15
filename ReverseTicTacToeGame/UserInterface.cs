@@ -160,8 +160,8 @@ Please enter one digit number as row and then column for your next move :");
 
         public static void clearBoardBeforeNewMove()
         {
-            // Ex02.ConsoleUtils.Screen.Clear();
-            Console.WriteLine("Clear!");
+            Ex02.ConsoleUtils.Screen.Clear();
+          //  Console.WriteLine("Clear!");
         }
 
         public static void printBoard()
