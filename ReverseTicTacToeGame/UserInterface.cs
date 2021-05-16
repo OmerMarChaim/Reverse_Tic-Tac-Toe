@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using static ReverseTicTacToeGame.Enums;
 
 namespace ReverseTicTacToeGame
 {
@@ -10,6 +11,19 @@ namespace ReverseTicTacToeGame
             Player1,
             Player2
         }
+        private const char k_Circle = 'O';
+        private const char k_Cross = 'X';
+        private static char player1Sign = k_Cross;
+      private static char player2Sign = k_Circle;
+      public static char Player1Sign
+        {
+          get { return player1Sign; }
+      }
+      public static char Player2Sign
+      {
+          get { return player2Sign; }
+      }
+
 
         public static void InitGame()
         {
@@ -17,6 +31,8 @@ namespace ReverseTicTacToeGame
 
             int boardSize = ValiditionUi.GetValidBoardSize() + 1; /// we want board size +1 then what we got 
             bool player1IsComputer = false;
+          
+
             bool player2IsComputer = ValiditionUi.IsPlayerIsComputer();
             GameLogic game = new GameLogic(boardSize, player1IsComputer, player2IsComputer);
             startGame();
@@ -83,7 +99,7 @@ namespace ReverseTicTacToeGame
         private static void updateTheUserInterfaceAccordingTheState()
         {
             GameLogic.eGameState currentState = GameLogic.CurrentGameState;
-            char signOfTheWinner = GameLogic.WinnerPlayer.Sign;
+            eSignsOfPlayers signOfTheWinner = GameLogic.WinnerPlayer.Sign;
 
             if(currentState == GameLogic.eGameState.Win)
             {
@@ -112,18 +128,18 @@ namespace ReverseTicTacToeGame
             Console.WriteLine($"No one is going to win this game, there's a tie! This game is over without winner.");
         }
 
-        internal static void PrintWinMessage(char i_SignOfTheWinner)
+        internal static void PrintWinMessage(eSignsOfPlayers i_SignOfTheWinner)
         {
-            Console.WriteLine($"Well done! The winner in this round is the player that play with the sign: {i_SignOfTheWinner}");
+            Console.WriteLine($"Well done! The winner in this round is : {i_SignOfTheWinner}");
         }
 
-        internal static void PrintQuitMessage(char i_SignOfTheWinner)
+        internal static void PrintQuitMessage(eSignsOfPlayers i_SignOfTheWinner)
         {
             Console.WriteLine(
-                $"You Quit from the Game! The winner in this round is the player that play with the sign:{i_SignOfTheWinner}");
+                $"You Quit from the Game! The winner in this round is : {i_SignOfTheWinner}");
         }
 
-        internal static (int, int) GetValidPointFromUser(char i_PlayerSign)
+        internal static (int, int) GetValidPointFromUser(eSignsOfPlayers i_PlayerSign)
         {
             bool isValidPoint = false;
             int row = 0;
@@ -166,7 +182,8 @@ Please enter one digit number as row and then column for your next move :");
 
         public static void printBoard()
         {
-            Console.WriteLine(GameLogic.GameBoard.BoardToSting);
+            Console.WriteLine(GameLogic.GameBoard.BoardToSting); 
+           
         }
     }
 }

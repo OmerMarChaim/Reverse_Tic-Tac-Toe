@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
+using static ReverseTicTacToeGame.Enums;
+
 
 namespace ReverseTicTacToeGame
 {
     internal class Board
     {
         private readonly int r_Size; 
-        private static char[,] m_Board;
+        private static eSignsOfPlayers[,] m_Board;
      
         HashSet<(int, int)> m_FreeSpots;
         private const int k_MinBoardSize = 3;
@@ -17,17 +19,20 @@ namespace ReverseTicTacToeGame
         private const char k_Circle = 'O';
         private const char k_Cross = 'X';
         private const int Q_sign = -1;
+  
+
 
         public Board(int i_Size)
         {
             r_Size = i_Size;
-            m_Board = new char[i_Size, i_Size];
+            m_Board = new eSignsOfPlayers[i_Size, i_Size];
             m_FreeSpots=new HashSet<(int, int)>();
             for(int i = 1; i < i_Size; i++)
             {
                 for(int j = 1; j < i_Size; j++)
                 {
                     m_FreeSpots.Add((i, j));
+                    m_Board[i, j] = eSignsOfPlayers.Empty;
                 }
             }
         }
@@ -40,7 +45,7 @@ namespace ReverseTicTacToeGame
         {
             get { return m_FreeSpots; }
         }
-        public char[,] GameBoard
+        public eSignsOfPlayers[,] GameBoard
         {
             get { return m_Board; }
             set { m_Board = value; }
@@ -50,7 +55,7 @@ namespace ReverseTicTacToeGame
             get { return ToStringBoard(); }
         }
 
-        internal void SetValueOnBoard(int i_Row, int i_Column, char i_Symbol)
+        internal void SetValueOnBoard(int i_Row, int i_Column, eSignsOfPlayers i_Symbol)
         {
             if(i_Row != Q_sign && i_Column != Q_sign)
             {
@@ -62,7 +67,7 @@ namespace ReverseTicTacToeGame
 
         internal bool IsEmptySpot(int i_Row, int i_Column)
         {
-            bool isEmptySpot = m_Board[i_Row, i_Column] == (char)0;
+            bool isEmptySpot = m_Board[i_Row, i_Column] == eSignsOfPlayers.Empty;
             return isEmptySpot;
         }
 
@@ -81,14 +86,19 @@ namespace ReverseTicTacToeGame
                 resultedString.Append($"{row}|");
                 for (int col = 1; col < r_Size ; col++)
                 {
-                    char current = m_Board[row, col];
-                    if(current == k_Empty)
+                    eSignsOfPlayers current = m_Board[row, col];
+                    if(current == eSignsOfPlayers.Empty)
                     {
-                        resultedString.Append($"  {current} |");    
+                        resultedString.Append($"  {""} |");    
+                    }
+                    
+                    else if(current == eSignsOfPlayers.Player1)
+                    {
+                            resultedString.Append($" {UserInterface.Player1Sign} |");
                     }
                     else
                     {
-                        resultedString.Append($" {current} |");
+                        resultedString.Append($" {UserInterface.Player2Sign} |");
                     }
                     
                 }

@@ -2,6 +2,8 @@
 using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Text;
+using static ReverseTicTacToeGame.Enums;
+
 
 namespace ReverseTicTacToeGame
 {
@@ -18,12 +20,8 @@ namespace ReverseTicTacToeGame
         private const char k_Cross = 'X';
         private const int k_MinBoardSize = 3;
         private const int k_MaxBoardSize = 9;
+     
 
-        internal enum eTurnOf
-        {
-            Player1,
-            Player2
-        }
 
         internal enum eGameState
         {
@@ -36,8 +34,8 @@ namespace ReverseTicTacToeGame
         public GameLogic(int i_BoardSize, bool i_Player1IsComputer, bool i_Player2IsComputer)
         {
             s_GameBoard = new Board(i_BoardSize);
-            s_Player1 = new Player(k_Cross, i_Player1IsComputer);
-            s_Player2 = new Player(k_Circle, i_Player2IsComputer);
+            s_Player1 = new Player(eSignsOfPlayers.Player1, i_Player1IsComputer);
+            s_Player2 = new Player(eSignsOfPlayers.Player2, i_Player2IsComputer);
             s_CurrentGameState = eGameState.Playing;
         }
 
@@ -164,10 +162,10 @@ namespace ReverseTicTacToeGame
         internal static void CreateNewBoardForAnotherGame()
         {
             int boardSize = s_GameBoard.Size;
-            s_GameBoard.GameBoard = new char[boardSize, boardSize];
+            s_GameBoard.GameBoard = new eSignsOfPlayers[boardSize, boardSize];
         }
 
-        internal static bool ThereIsWin((int row, int column) i_Point, char i_PlayerSign)
+        internal static bool ThereIsWin((int row, int column) i_Point, eSignsOfPlayers i_PlayerSign)
         {
             int numberOfSignsToWin = s_GameBoard.Size - 1;
             bool isWinInRowAndCol = checkWinInRowAndColumn(i_Point, i_PlayerSign, numberOfSignsToWin);
@@ -179,7 +177,7 @@ namespace ReverseTicTacToeGame
 
         private static bool checkWinInAntidiagonal(
             (int row, int column) i_Point,
-            char i_PlayerSign,
+            eSignsOfPlayers i_PlayerSign,
             int i_NumberOfSignsToWin)
         {
             int counter = 0;
@@ -204,7 +202,7 @@ namespace ReverseTicTacToeGame
 
         private static bool checkWinInMainDiagonal(
             (int row, int column) i_Point,
-            char i_PlayerSign,
+            eSignsOfPlayers i_PlayerSign,
             int i_NumberOfSignsToWin)
         {
             int counter = 0;
@@ -229,7 +227,7 @@ namespace ReverseTicTacToeGame
 
         private static bool checkWinInRowAndColumn(
             (int row, int column) i_Point,
-            char i_PlayerSign,
+            eSignsOfPlayers i_PlayerSign,
             int i_NumberOfSignsToWin)
         {
             int counterRow = 0;
