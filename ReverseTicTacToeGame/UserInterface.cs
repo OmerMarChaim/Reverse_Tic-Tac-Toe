@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Text;
-using static ReverseTicTacToeGame.Enums;
 using static ReverseTicTacToeGame.GameLogic;
 using static ReverseTicTacToeGame.GameLogic.eGameState;
-using static ReverseTicTacToeGame.Enums.eSignsOfPlayers;
+using static ReverseTicTacToeGame.ePlayersMark;
 
 namespace ReverseTicTacToeGame
 {
@@ -31,7 +30,7 @@ namespace ReverseTicTacToeGame
             bool player1IsComputer = false;
             bool player2IsComputer = ValiditionUi.IsPlayerIsComputer();
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            new GameLogic(boardSize, player1IsComputer, player2IsComputer);
+            GameLogic game = new GameLogic(boardSize, player1IsComputer, player2IsComputer);
             UserInterface.PrintBoard();
             startGame();
         } 
@@ -82,7 +81,7 @@ namespace ReverseTicTacToeGame
                 if(isQisAppeared || isYisAppeared)
                 {
                     isValid = true;
-                    if(userInput == "Y")
+                    if(isYisAppeared)
                     {
                         yesOrNoFlag = true;
                     }
@@ -97,7 +96,7 @@ namespace ReverseTicTacToeGame
         private static void updateTheUserInterfaceAccordingTheState() // Checked
         {
             eGameState currentState = CurrentGameState;
-            eSignsOfPlayers signOfTheWinner = WinnerPlayer.Sign;
+            ePlayersMark signOfTheWinner = WinnerPlayer.Sign;
 
             if(currentState == Win)
             {
@@ -128,28 +127,28 @@ namespace ReverseTicTacToeGame
             Console.WriteLine("No one is going to win this game, there's a tie! This game is over without winner.");
         }
 
-        private static void printWinMessage(eSignsOfPlayers i_SignOfTheWinner)
+        private static void printWinMessage(ePlayersMark i_SignOfTheWinner)
         {
             Console.WriteLine($"Well done! The winner in this round is : {i_SignOfTheWinner}");
         }
 
-        private static void printQuitMessage(eSignsOfPlayers i_SignOfTheWinner)
+        private static void printQuitMessage(ePlayersMark i_SignOfTheWinner)
         {
             Console.WriteLine($"You Quit from the Game! The winner in this round is : {i_SignOfTheWinner}");
         }
 
-        internal static (int, int) GetValidPointFromUser(eSignsOfPlayers i_PlayerSign) // Checked
+        internal static (int, int) GetValidPointFromUser(ePlayersMark i_PlayerMarkSign) // Checked
         {
             bool isValidPoint = false;
             int row = 0;
             int column = 0;
             Console.WriteLine(
-                $@"{i_PlayerSign}! Its your turn now! 
+                $@"{i_PlayerMarkSign}! Its your turn now! 
 Please enter one digit number as row and then column for your next move :");
 
             while(!isValidPoint)
             {
-                Console.WriteLine($"{i_PlayerSign} : Please enter row number:");
+                Console.WriteLine($"{i_PlayerMarkSign} : Please enter row number:");
                 row = ValiditionUi.GetValidNumberInBoardRangeFromUser();
                 if(row == -1)
                 {
@@ -158,7 +157,7 @@ Please enter one digit number as row and then column for your next move :");
                     break;
                 }
 
-                Console.WriteLine($"{i_PlayerSign} : Please enter column number:");
+                Console.WriteLine($"{i_PlayerMarkSign} : Please enter column number:");
                 column = ValiditionUi.GetValidNumberInBoardRangeFromUser();
                 if(column == -1)
                 {
@@ -171,7 +170,7 @@ Please enter one digit number as row and then column for your next move :");
                 if(isValidPoint == false)
                 {
                     Console.WriteLine(
-                        $@"{i_PlayerSign} : Sorry, this spot is not empty. Please choose a new one! 
+                        $@"{i_PlayerMarkSign} : Sorry, this spot is not empty. Please choose a new one! 
 REMINDER: choose one digit number as ROW and then COLUMN in valid range size, for your next move");
                 }
             }
@@ -181,8 +180,8 @@ REMINDER: choose one digit number as ROW and then COLUMN in valid range size, fo
 
         public static void ClearBoardBeforeNewMove() // Checked
         {
-            // Ex02.ConsoleUtils.Screen.Clear();
-            Console.WriteLine("Clear!");
+             Ex02.ConsoleUtils.Screen.Clear();
+            //Console.WriteLine("Clear!");
         }
 
         public static void PrintBoard() // Checked
@@ -190,7 +189,7 @@ REMINDER: choose one digit number as ROW and then COLUMN in valid range size, fo
             Console.WriteLine(toStringBoard());
         }
 
-        private static string toStringBoard()
+        private static string toStringBoard() // Checked
         {
             char space = ' ';
             StringBuilder resultedString = new StringBuilder($"{space}{space}");
@@ -207,13 +206,13 @@ REMINDER: choose one digit number as ROW and then COLUMN in valid range size, fo
                 resultedString.Append($"{row}|");
                 for(int col = 1; col < GameLogic.GameBoard.Size; col++)
                 {
-                    eSignsOfPlayers currentSign = GameLogic.GameBoard.GameBoard[row, col];
+                    ePlayersMark currentSign = GameLogic.GameBoard.GameBoard[row, col];
                     char currentChar = k_Empty;
-                    if(currentSign == Cross)
+                    if(currentSign == ePlayersMark.Player1)
                     {
                         currentChar = k_Cross;
                     }
-                    else if(currentSign == Circle)
+                    else if(currentSign == ePlayersMark.Player2)
                     {
                         currentChar = k_Circle;
                     }

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Text;
-using static ReverseTicTacToeGame.Enums;
 
 
 namespace ReverseTicTacToeGame
@@ -10,7 +9,7 @@ namespace ReverseTicTacToeGame
     internal class Board
     {
         private readonly int r_Size; 
-        private static eSignsOfPlayers[,] s_Board;
+        private static ePlayersMark[,] s_Board;
      
         HashSet<(int, int)> m_FreeSpots;
         private const int k_MinBoardSize = 3;
@@ -25,14 +24,14 @@ namespace ReverseTicTacToeGame
         public Board(int i_Size)
         {
             r_Size = i_Size;
-            s_Board = new eSignsOfPlayers[i_Size, i_Size];
+            s_Board = new ePlayersMark[i_Size, i_Size];
             m_FreeSpots=new HashSet<(int, int)>();
             for(int i = 1; i < i_Size; i++)
             {
                 for(int j = 1; j < i_Size; j++)
                 {
                     m_FreeSpots.Add((i, j));
-                    s_Board[i, j] = eSignsOfPlayers.Empty;
+                    s_Board[i, j] = ePlayersMark.Empty;
                 }
             } 
 
@@ -46,14 +45,14 @@ namespace ReverseTicTacToeGame
         {
             get { return m_FreeSpots; }
         }
-        public eSignsOfPlayers[,] GameBoard
+        public ePlayersMark[,] GameBoard
         {
             get { return s_Board; }
             set { s_Board = value; }
         }
      
 
-        internal void SetValueOnBoard(int i_Row, int i_Column, eSignsOfPlayers i_Symbol)
+        internal void SetValueOnBoard(int i_Row, int i_Column, ePlayersMark i_Symbol)
         {
             if(i_Row != k_QSign && i_Column != k_QSign)
             {
@@ -65,7 +64,7 @@ namespace ReverseTicTacToeGame
 
         internal bool IsEmptySpot(int i_Row, int i_Column)
         {
-            bool isEmptySpot = s_Board[i_Row, i_Column] == eSignsOfPlayers.Empty;
+            bool isEmptySpot = s_Board[i_Row, i_Column] == ePlayersMark.Empty;
             return isEmptySpot;
         }
 
