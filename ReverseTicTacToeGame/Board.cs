@@ -10,7 +10,7 @@ namespace ReverseTicTacToeGame
     internal class Board
     {
         private readonly int r_Size; 
-        private static eSignsOfPlayers[,] m_Board;
+        private static eSignsOfPlayers[,] s_Board;
      
         HashSet<(int, int)> m_FreeSpots;
         private const int k_MinBoardSize = 3;
@@ -18,21 +18,21 @@ namespace ReverseTicTacToeGame
         internal const char k_Empty = (char)0;
         private const char k_Circle = 'O';
         private const char k_Cross = 'X';
-        private const int Q_sign = -1;
+        private const int k_QSign = -1;
   
 
 
         public Board(int i_Size)
         {
             r_Size = i_Size;
-            m_Board = new eSignsOfPlayers[i_Size, i_Size];
+            s_Board = new eSignsOfPlayers[i_Size, i_Size];
             m_FreeSpots=new HashSet<(int, int)>();
             for(int i = 1; i < i_Size; i++)
             {
                 for(int j = 1; j < i_Size; j++)
                 {
                     m_FreeSpots.Add((i, j));
-                    m_Board[i, j] = eSignsOfPlayers.Empty;
+                    s_Board[i, j] = eSignsOfPlayers.Empty;
                 }
             } 
 
@@ -48,16 +48,16 @@ namespace ReverseTicTacToeGame
         }
         public eSignsOfPlayers[,] GameBoard
         {
-            get { return m_Board; }
-            set { m_Board = value; }
+            get { return s_Board; }
+            set { s_Board = value; }
         }
      
 
         internal void SetValueOnBoard(int i_Row, int i_Column, eSignsOfPlayers i_Symbol)
         {
-            if(i_Row != Q_sign && i_Column != Q_sign)
+            if(i_Row != k_QSign && i_Column != k_QSign)
             {
-                m_Board[i_Row, i_Column] = i_Symbol;
+                s_Board[i_Row, i_Column] = i_Symbol;
                 m_FreeSpots.Remove((i_Row, i_Column));
 
             }
@@ -65,7 +65,7 @@ namespace ReverseTicTacToeGame
 
         internal bool IsEmptySpot(int i_Row, int i_Column)
         {
-            bool isEmptySpot = m_Board[i_Row, i_Column] == eSignsOfPlayers.Empty;
+            bool isEmptySpot = s_Board[i_Row, i_Column] == eSignsOfPlayers.Empty;
             return isEmptySpot;
         }
 

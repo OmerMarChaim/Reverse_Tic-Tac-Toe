@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
-using System.Text;
 using static ReverseTicTacToeGame.Enums;
 
 
@@ -14,12 +12,13 @@ namespace ReverseTicTacToeGame
         private static Player s_Player2;
         private static eGameState s_CurrentGameState;
         private static Player s_WinnerPlayer;
-
-        internal const char k_Empty = (char)0;
-        private const char k_Circle = 'O';
-        private const char k_Cross = 'X';
         private const int k_MinBoardSize = 3;
         private const int k_MaxBoardSize = 9;
+
+        // internal const char k_Empty = (char)0; *** WE DONT USE THOSE? *** $O$
+        // internal const char k_Circle = 'O';
+        // internal const char k_Cross = 'X';
+        
      
 
 
@@ -34,10 +33,10 @@ namespace ReverseTicTacToeGame
         public GameLogic(int i_BoardSize, bool i_Player1IsComputer, bool i_Player2IsComputer)
         {
             s_GameBoard = new Board(i_BoardSize);
-            s_Player1 = new Player(eSignsOfPlayers.Player1, i_Player1IsComputer);
-            s_Player2 = new Player(eSignsOfPlayers.Player2, i_Player2IsComputer);
+            s_Player1 = new Player(eSignsOfPlayers.Cross, i_Player1IsComputer);
+            s_Player2 = new Player(eSignsOfPlayers.Circle, i_Player2IsComputer);
             s_CurrentGameState = eGameState.Playing;
-            UserInterface.printBoard();
+            // UserInterface.PrintBoard(); ** Should it be in logic? For the iPhone we would not ask to print ** $O$
 
         }
 
@@ -77,7 +76,7 @@ namespace ReverseTicTacToeGame
         ///                 ask for a valid (in range) play from ConsoleUi
         ///                 check if the cell is empty 
         ///  
-        public static void OneMoveInGame()
+        public static void OneRoundInGame()
         {
             //eTurnOf currentPlaying = eTurnOf.Player1;
             (int row, int column) point = (0, 0);
@@ -95,8 +94,8 @@ namespace ReverseTicTacToeGame
 
                 s_GameBoard.SetValueOnBoard(point.row, point.column, player.Sign);
                 updateStateOfGame(point, player);
-                UserInterface.clearBoardBeforeNewMove();
-                UserInterface.printBoard();
+                UserInterface.ClearBoardBeforeNewMove();
+                UserInterface.PrintBoard();
 
                 if (s_CurrentGameState != eGameState.Playing)
                 {
@@ -165,8 +164,8 @@ namespace ReverseTicTacToeGame
         {
             int boardSize = s_GameBoard.Size;
             s_GameBoard = new Board(boardSize);
-            UserInterface.clearBoardBeforeNewMove();
-            UserInterface.printBoard();
+            UserInterface.ClearBoardBeforeNewMove();
+            UserInterface.PrintBoard();
 
         }
 
@@ -305,7 +304,7 @@ namespace ReverseTicTacToeGame
             return isValidSizeBoard;
         }
 
-        internal static void WantAnotherGame()
+        internal static void PreparingForAnotherRound()
         {
             CurrentGameState = eGameState.Playing;
             CreateNewBoardForAnotherGame();

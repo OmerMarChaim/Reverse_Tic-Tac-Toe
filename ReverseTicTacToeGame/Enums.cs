@@ -10,8 +10,8 @@ namespace ReverseTicTacToeGame
     {
         public enum eSignsOfPlayers
         {
-            Player1,
-            Player2,
+            Cross,
+            Circle,
             Empty
         }
     }
