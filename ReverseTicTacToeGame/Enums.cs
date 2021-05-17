@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace ReverseTicTacToeGame
 {
-    public class Enums
+    public enum eSignsOfPlayers
     {
-        public enum eSignsOfPlayers
-        {
-            Cross,
-            Circle,
-            Empty
-        }
+        Cross,
+        Circle,
+        Empty
     }
 }

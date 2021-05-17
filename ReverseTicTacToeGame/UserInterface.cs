@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Text;
-using static ReverseTicTacToeGame.Enums;
 using static ReverseTicTacToeGame.GameLogic;
 using static ReverseTicTacToeGame.GameLogic.eGameState;
-using static ReverseTicTacToeGame.Enums.eSignsOfPlayers;
+using static ReverseTicTacToeGame.eSignsOfPlayers;
 
 namespace ReverseTicTacToeGame
 {
@@ -31,7 +30,7 @@ namespace ReverseTicTacToeGame
             bool player1IsComputer = false;
             bool player2IsComputer = ValiditionUi.IsPlayerIsComputer();
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
-            new GameLogic(boardSize, player1IsComputer, player2IsComputer);
+            GameLogic game = new GameLogic(boardSize, player1IsComputer, player2IsComputer);
             UserInterface.PrintBoard();
             startGame();
         } 
@@ -82,7 +81,7 @@ namespace ReverseTicTacToeGame
                 if(isQisAppeared || isYisAppeared)
                 {
                     isValid = true;
-                    if(userInput == "Y")
+                    if(isYisAppeared)
                     {
                         yesOrNoFlag = true;
                     }
@@ -190,7 +189,7 @@ REMINDER: choose one digit number as ROW and then COLUMN in valid range size, fo
             Console.WriteLine(toStringBoard());
         }
 
-        private static string toStringBoard()
+        private static string toStringBoard() // Checked
         {
             char space = ' ';
             StringBuilder resultedString = new StringBuilder($"{space}{space}");

@@ -1,21 +1,22 @@
 ﻿using System;
+
 namespace ReverseTicTacToeGame
 {
-    class ValiditionUi
+    static class ValiditionUi
     {
         public static int GetValidBoardSize()
         {
-            //get number between 3-9
-            //return number between 3-9 
             Console.WriteLine("Please enter the board size - an integer between 3-9");
-            return GetValidSizeBoardFromUser() ;
 
+            return GetValidSizeBoardFromUser();
         }
+
         //
         public static bool IsPlayerIsComputer()
         {
             bool isComputer = false;
-            Console.WriteLine(@"Please choose who is you rival:
+            Console.WriteLine(
+                @"Please choose who is you rival:
 1) Human player
 2) Computer");
             bool isValid = false;
@@ -40,23 +41,24 @@ namespace ReverseTicTacToeGame
 
             return isComputer;
         }
-        
+
         internal static int GetValidNumberInBoardRangeFromUser()
         {
             bool isValidNumberFormat = true;
             bool isValidRange = true;
-            
+
             int number = 0;
             string userInput = Console.ReadLine();
-            if(userInput=="q" || userInput == "Q")
+            if(userInput == "q" || userInput == "Q")
             {
                 number = -1;
             }
             else
             {
                 isValidNumberFormat = int.TryParse(userInput, out number);
-                isValidRange = GameLogic.isInBoradRangeSize(number);
+                isValidRange = GameLogic.IsInBoardRangeSize(number);
             }
+
             while(!isValidNumberFormat || !isValidRange)
             {
                 if(!isValidNumberFormat)
@@ -67,9 +69,10 @@ namespace ReverseTicTacToeGame
                 {
                     Console.WriteLine($"Your input is not in range 1 - {GameLogic.GameBoard.Size - 1}, try again");
                 }
+
                 userInput = Console.ReadLine();
                 isValidNumberFormat = int.TryParse(userInput, out number);
-                isValidRange = GameLogic.isInBoradRangeSize(number);
+                isValidRange = GameLogic.IsInBoardRangeSize(number);
             }
 
             return number;
@@ -83,7 +86,7 @@ namespace ReverseTicTacToeGame
             int number = 0;
             string userInput = Console.ReadLine();
             isValidNumberFormat = int.TryParse(userInput, out number);
-            isValidRange = GameLogic.isValidSizeBoard(number);
+            isValidRange = GameLogic.IsValidSizeBoard(number);
             while(!isValidNumberFormat || !isValidRange)
             {
                 if(!isValidNumberFormat)
@@ -94,13 +97,13 @@ namespace ReverseTicTacToeGame
                 {
                     Console.WriteLine($"Your input is not in range 3-9, try again");
                 }
+
                 userInput = Console.ReadLine();
                 isValidNumberFormat = int.TryParse(userInput, out number);
-                isValidRange = GameLogic.isValidSizeBoard(number);
+                isValidRange = GameLogic.IsValidSizeBoard(number);
             }
 
             return number;
         }
-
     }
 }

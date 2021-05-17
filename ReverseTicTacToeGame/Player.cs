@@ -1,5 +1,3 @@
-using static ReverseTicTacToeGame.Enums;
-
 namespace ReverseTicTacToeGame
 {
     internal struct Player
