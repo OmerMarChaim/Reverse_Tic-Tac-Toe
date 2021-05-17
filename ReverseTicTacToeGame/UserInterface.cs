@@ -3,6 +3,7 @@ using System.Text;
 using static ReverseTicTacToeGame.Enums;
 using static ReverseTicTacToeGame.GameLogic;
 using static ReverseTicTacToeGame.GameLogic.eGameState;
+using static ReverseTicTacToeGame.Enums.eSignsOfPlayers;
 
 namespace ReverseTicTacToeGame
 {
@@ -10,6 +11,7 @@ namespace ReverseTicTacToeGame
     {
         private const char k_Circle = 'O'; 
         private const char k_Cross = 'X';
+        private const char k_Empty = ' ';
         private const char k_Player1Sign = k_Cross;
         private const char k_Player2Sign = k_Circle;
         public static char Player1Sign
@@ -30,6 +32,7 @@ namespace ReverseTicTacToeGame
             bool player2IsComputer = ValiditionUi.IsPlayerIsComputer();
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             new GameLogic(boardSize, player1IsComputer, player2IsComputer);
+            UserInterface.PrintBoard();
             startGame();
         } 
 
@@ -74,7 +77,9 @@ namespace ReverseTicTacToeGame
             while(!isValid)
             {
                 userInput = Console.ReadLine();
-                if(userInput == "Y" || userInput == "Q")
+                bool isYisAppeared = userInput == "Y" || userInput == "y"; 
+                bool isQisAppeared = userInput == "Q" || userInput == "q"; 
+                if(isQisAppeared || isYisAppeared)
                 {
                     isValid = true;
                     if(userInput == "Y")
@@ -187,10 +192,13 @@ REMINDER: choose one digit number as ROW and then COLUMN in valid range size, fo
 
         private static string toStringBoard()
         {
-            StringBuilder resultedString = new StringBuilder();
-            for(int i = 1; i < GameLogic.GameBoard.Size; i++)
+            char space = ' ';
+            StringBuilder resultedString = new StringBuilder($"{space}{space}");
+            
+            for(int col = 1; col < GameLogic.GameBoard.Size; col++)
             {
-                resultedString.Append($"   {i} ");
+                resultedString.Append($"{col}");
+                resultedString.Append(space,3);
             }
 
             resultedString.AppendLine();
@@ -199,31 +207,30 @@ REMINDER: choose one digit number as ROW and then COLUMN in valid range size, fo
                 resultedString.Append($"{row}|");
                 for(int col = 1; col < GameLogic.GameBoard.Size; col++)
                 {
-                    eSignsOfPlayers current = GameLogic.GameBoard.GameBoard[row, col];
-                    if(current == eSignsOfPlayers.Empty)
+                    eSignsOfPlayers currentSign = GameLogic.GameBoard.GameBoard[row, col];
+                    char currentChar = k_Empty;
+                    if(currentSign == Cross)
                     {
-                        resultedString.Append($"    |");
+                        currentChar = k_Cross;
                     }
-
-                    else if(current == eSignsOfPlayers.Cross)
+                    else if(currentSign == Circle)
                     {
-                        resultedString.Append($" {Player1Sign} |");
+                        currentChar = k_Circle;
                     }
-                    else
-                    {
-                        resultedString.Append($" {Player2Sign} |");
-                    }
-                }
-
-                resultedString.AppendLine("");
-                resultedString.Append(" ");
-                for(int col = 1; col < GameLogic.GameBoard.Size; col++)
-                {
-                    resultedString.Append($"=====");
+                    
+                    resultedString.Append($" {currentChar} |");
                 }
 
                 resultedString.AppendLine();
+                resultedString.Append(space);
+                for(int col = 1; col < GameLogic.GameBoard.Size; col++)
+                { // 1-5 2-9 3-13 4-17 5-21 --> 1=5 2=5+4 3=5+4+3 4=5+4+3+2
+                        resultedString.Append('=', 4);
+                }
+                resultedString.Append('=');
+                resultedString.AppendLine();
             }
+            
 
             return resultedString.ToString();
         }
