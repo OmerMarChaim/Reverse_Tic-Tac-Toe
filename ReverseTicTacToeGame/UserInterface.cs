@@ -182,8 +182,52 @@ Please enter one digit number as row and then column for your next move :");
 
         public static void printBoard()
         {
-            Console.WriteLine(GameLogic.GameBoard.BoardToSting); 
+            Console.WriteLine(ToStringBoard()); 
            
+        }
+        internal static string ToStringBoard()
+        {
+
+            StringBuilder resultedString = new StringBuilder();
+            for (int i = 1; i < GameLogic.GameBoard.Size; i++)
+            {
+                resultedString.Append($"   {i} ");
+            }
+
+            resultedString.AppendLine();
+            for (int row = 1; row < GameLogic.GameBoard.Size; row++)
+            {
+                resultedString.Append($"{row}|");
+                for (int col = 1; col < GameLogic.GameBoard.Size; col++)
+                {
+                    eSignsOfPlayers current = GameLogic.GameBoard.GameBoard[row, col];
+                    if (current == eSignsOfPlayers.Empty)
+                    {
+                        resultedString.Append($"    |");
+                    }
+
+                    else if (current == eSignsOfPlayers.Player1)
+                    {
+                        resultedString.Append($" {Player1Sign} |");
+                    }
+                    else
+                    {
+                        resultedString.Append($" {Player2Sign} |");
+                    }
+
+                }
+
+                resultedString.AppendLine("");
+                resultedString.Append(" ");
+                for (int col = 1; col < GameLogic.GameBoard.Size; col++)
+                {
+                    resultedString.Append($"=====");
+                }
+
+                resultedString.AppendLine();
+            }
+
+            return resultedString.ToString();
         }
     }
 }

@@ -37,6 +37,8 @@ namespace ReverseTicTacToeGame
             s_Player1 = new Player(eSignsOfPlayers.Player1, i_Player1IsComputer);
             s_Player2 = new Player(eSignsOfPlayers.Player2, i_Player2IsComputer);
             s_CurrentGameState = eGameState.Playing;
+            UserInterface.printBoard();
+
         }
 
         public static eGameState CurrentGameState
@@ -82,7 +84,6 @@ namespace ReverseTicTacToeGame
             Player[] players = { s_Player1, s_Player2 };
             foreach(Player player in players)
             {
-                UserInterface.printBoard();
                 if (!player.IsComputer)
                 {
                     point = UserInterface.GetValidPointFromUser(player.Sign); // the slot is inrange and free   
@@ -95,8 +96,9 @@ namespace ReverseTicTacToeGame
                 s_GameBoard.SetValueOnBoard(point.row, point.column, player.Sign);
                 updateStateOfGame(point, player);
                 UserInterface.clearBoardBeforeNewMove();
-           
-                if(s_CurrentGameState != eGameState.Playing)
+                UserInterface.printBoard();
+
+                if (s_CurrentGameState != eGameState.Playing)
                 {
                     break;
                 }
@@ -162,7 +164,10 @@ namespace ReverseTicTacToeGame
         internal static void CreateNewBoardForAnotherGame()
         {
             int boardSize = s_GameBoard.Size;
-            s_GameBoard.GameBoard = new eSignsOfPlayers[boardSize, boardSize];
+            s_GameBoard = new Board(boardSize);
+            UserInterface.clearBoardBeforeNewMove();
+            UserInterface.printBoard();
+
         }
 
         internal static bool ThereIsWin((int row, int column) i_Point, eSignsOfPlayers i_PlayerSign)

@@ -34,7 +34,8 @@ namespace ReverseTicTacToeGame
                     m_FreeSpots.Add((i, j));
                     m_Board[i, j] = eSignsOfPlayers.Empty;
                 }
-            }
+            } 
+
         }
 
         public int Size
@@ -50,10 +51,7 @@ namespace ReverseTicTacToeGame
             get { return m_Board; }
             set { m_Board = value; }
         }
-        public string BoardToSting
-        {
-            get { return ToStringBoard(); }
-        }
+     
 
         internal void SetValueOnBoard(int i_Row, int i_Column, eSignsOfPlayers i_Symbol)
         {
@@ -71,50 +69,6 @@ namespace ReverseTicTacToeGame
             return isEmptySpot;
         }
 
-        internal string ToStringBoard()
-        {
-
-            StringBuilder resultedString = new StringBuilder();
-            for (int i = 1; i < this.r_Size ; i++)
-            {
-                resultedString.Append($"  {i} ");
-            }
-
-            resultedString.AppendLine();
-            for (int row = 1; row < r_Size ; row++)
-            {
-                resultedString.Append($"{row}|");
-                for (int col = 1; col < r_Size ; col++)
-                {
-                    eSignsOfPlayers current = m_Board[row, col];
-                    if(current == eSignsOfPlayers.Empty)
-                    {
-                        resultedString.Append($"  {""} |");    
-                    }
-                    
-                    else if(current == eSignsOfPlayers.Player1)
-                    {
-                            resultedString.Append($" {UserInterface.Player1Sign} |");
-                    }
-                    else
-                    {
-                        resultedString.Append($" {UserInterface.Player2Sign} |");
-                    }
-                    
-                }
-
-                resultedString.AppendLine("");
-                resultedString.Append(" "); 
-                for (int col = 1; col < r_Size; col++)
-                {
-                    resultedString.Append($"=====");
-                }
-
-                resultedString.AppendLine();
-            }
-
-            return resultedString.ToString();
-        }
 
         internal bool IsFull()
         {
