@@ -8,9 +8,10 @@ namespace ReverseTicTacToeGame
 {
     public enum ePlayersMark
     {
+
         Empty,
         Player1,
         Player2
-      
+
     }
 }

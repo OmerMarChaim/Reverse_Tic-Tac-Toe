@@ -41,12 +41,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Board.cs" />
-    <Compile Include="Enums.cs" />
+    <Compile Include="ePlayersMark.cs" />
     <Compile Include="GameLogic.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="UserInterface.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="ValiditionUI.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Ex02.ConsoleUtils, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">

@@ -5,17 +5,13 @@ namespace ReverseTicTacToeGame
 {
     internal class GameLogic
     {
-        private static Board s_GameBoard;
-        private static Player s_Player1;
-        private static Player s_Player2;
-        private static eGameState s_CurrentGameState;
-        private static Player s_WinnerPlayer;
+        private Board m_GameBoard;
+        private Player m_Player1;
+        private Player m_Player2;
+        private eGameState m_CurrentGameState;
+        private Player m_WinnerPlayer;
         private const int k_MinBoardSize = 3;
         private const int k_MaxBoardSize = 9;
-
-        // internal const char k_Empty = (char)0; *** WE DONT USE THOSE? *** $O$
-        // internal const char k_Circle = 'O';
-        // internal const char k_Cross = 'X';
 
         internal enum eGameState
         {
@@ -27,125 +23,122 @@ namespace ReverseTicTacToeGame
 
         public GameLogic(int i_BoardSize, bool i_Player1IsComputer, bool i_Player2IsComputer)
         {
-            s_GameBoard = new Board(i_BoardSize);
-            s_Player1 = new Player(ePlayersMark.Player1, i_Player1IsComputer);
-            s_Player2 = new Player(ePlayersMark.Player2, i_Player2IsComputer);
-            s_CurrentGameState = eGameState.Playing;
+            m_GameBoard = new Board(i_BoardSize);
+            m_Player1 = new Player(ePlayersMark.Player1, i_Player1IsComputer);
+            m_Player2 = new Player(ePlayersMark.Player2, i_Player2IsComputer);
+            m_CurrentGameState = eGameState.Playing;
         }
 
-        public static eGameState CurrentGameState
+        public eGameState CurrentGameState
         {
-            get { return s_CurrentGameState; }
-            private set { s_CurrentGameState = value; }
+            get { return this.m_CurrentGameState; }
+            private set { this.m_CurrentGameState = value; }
         }
-        public static Player WinnerPlayer
+        public Player WinnerPlayer
         {
-            get { return s_WinnerPlayer; }
-            set { s_WinnerPlayer = value; }
+            get { return m_WinnerPlayer; }
+            set { m_WinnerPlayer = value; }
         }
-        public static Player Player1
+        public Player Player1
         {
-            get { return s_Player1; }
-            set { s_Player1 = value; }
-        }
-
-        public static Player Player2
-        {
-            get { return s_Player2; }
-            set { s_Player2 = value; }
+            get { return m_Player1; }
+            set { m_Player1 = value; }
         }
 
-        public static Board GameBoard
+        public Player Player2
         {
-            get { return s_GameBoard; }
+            get { return m_Player2; }
+            set { m_Player2 = value; }
         }
 
-        public static void OneRoundInGame()
+        public Board GameBoard
         {
-            Player[] players = { s_Player1, s_Player2 };
+            get { return m_GameBoard; }
+        }
+
+        public void OneRoundInGame(UserInterface i_GameUi)
+        {
+            Player[] players = { m_Player1, m_Player2 };
             foreach(Player player in players)
             {
                 (int row, int column) point;
                 // ReSharper disable once ConvertIfStatementToConditionalTernaryExpression
                 if(!player.IsComputer)
                 {
-                    point = UserInterface.GetValidPointFromUser(player.Sign); // the slot is in range and free   
+                    point = i_GameUi.GetValidPointFromUser(player.Sign); // the slot is in range and free   
                 }
                 else
                 {
                     point = getRandomPointForComputer();
                 }
 
-                s_GameBoard.SetValueOnBoard(point.row, point.column, player.Sign);
+                this.GameBoard.SetValueOnBoard(point.row, point.column, player.Sign);
                 updateStateOfGame(point, player);
-                UserInterface.ClearBoardBeforeNewMove();
-                UserInterface.PrintBoard();
+                i_GameUi.CleanAndShowBeforeNewTurn();
 
-                if(s_CurrentGameState != eGameState.Playing)
+                if(m_CurrentGameState != eGameState.Playing)
                 {
                     break;
                 }
             }
         }
 
-        private static void updateStateOfGame((int row, int column) i_LastPointEntered, Player i_Player)
+        private void updateStateOfGame((int row, int column) i_LastPointEntered, Player i_Player)
         {
             if(isQuitPoint(i_LastPointEntered))
             {
                 updateWinnerStatistics(i_Player);
-                s_CurrentGameState = eGameState.Quit;
+                m_CurrentGameState = eGameState.Quit;
             }
             else if(thereIsWin(i_LastPointEntered, i_Player.Sign))
             {
                 updateWinnerStatistics(i_Player);
-                s_CurrentGameState = eGameState.Win;
+                m_CurrentGameState = eGameState.Win;
             }
             else if(thereIsTie())
             {
-                s_CurrentGameState = eGameState.Tie;
+                m_CurrentGameState = eGameState.Tie;
             }
 
             else
             {
-                s_CurrentGameState = eGameState.Playing;
+                m_CurrentGameState = eGameState.Playing;
             }
         }
 
-        private static void updateWinnerStatistics(Player i_LoserPlayer)
+        private void updateWinnerStatistics(Player i_LoserPlayer)
         {
-            if(i_LoserPlayer.Sign == s_Player1.Sign)
+            if(i_LoserPlayer.Sign == m_Player1.Sign)
             {
-                s_Player2.NumberOfWins++;
-                s_WinnerPlayer = s_Player2;
+                m_Player2.NumberOfWins++;
+                m_WinnerPlayer = m_Player2;
             }
             else
             {
-                s_Player1.NumberOfWins++;
-                s_WinnerPlayer = s_Player1;
+                m_Player1.NumberOfWins++;
+                m_WinnerPlayer = m_Player1;
             }
         }
 
-        private static (int, int) getRandomPointForComputer()
+        private (int, int) getRandomPointForComputer()
         {
             Random random = new Random();
 
-            int randomIndex = random.Next(0, s_GameBoard.FreeSpotsInBoard.Count);
-            (int row, int column) testedPoint = s_GameBoard.FreeSpotsInBoard.ElementAt(randomIndex);
+            int randomIndex = random.Next(0, this.GameBoard.FreeSpotsInBoard.Count);
+            (int row, int column) testedPoint = this.GameBoard.FreeSpotsInBoard.ElementAt(randomIndex);
 
             return testedPoint;
         }
 
-        private static void createNewBoardForAnotherGame()
+        private void createNewBoardForAnotherGame()
         {
-            int boardSize = s_GameBoard.Size;
-            s_GameBoard = new Board(boardSize);
-            UserInterface.ClearBoardBeforeNewMove();
-            UserInterface.PrintBoard();
+            int boardSize = this.GameBoard.Size;
+            this.m_GameBoard = new Board(boardSize);
         }
 
-        private static bool thereIsWin((int row, int column) i_Point, ePlayersMark i_PlayerMarkSign)
+        private bool thereIsWin((int row, int column) i_Point, ePlayersMark i_PlayerMarkSign)
         {
-            int numberOfSignsToWin = s_GameBoard.Size - 1;
+            int numberOfSignsToWin = this.GameBoard.Size - 1;
             bool isWinInRowAndCol = checkWinInRowAndColumn(i_Point, i_PlayerMarkSign, numberOfSignsToWin);
             bool isWinInDiagonal = checkWinInMainDiagonal(i_PlayerMarkSign, numberOfSignsToWin);
             bool isWinInAntiDiagonal = checkWinInAntiDiagonal(i_PlayerMarkSign, numberOfSignsToWin);
@@ -153,15 +146,15 @@ namespace ReverseTicTacToeGame
             return isWinInDiagonal || isWinInAntiDiagonal || isWinInRowAndCol;
         }
 
-        private static bool checkWinInAntiDiagonal(ePlayersMark i_PlayerMarkSign, int i_NumberOfSignsToWin)
+        private bool checkWinInAntiDiagonal(ePlayersMark i_PlayerMarkSign, int i_NumberOfSignsToWin)
         {
             int counter = 0;
 
             // In square matrix - the anti diagonal the sum of row and column equal to the matrix size+1
 
-            for(int i = 1; i <= s_GameBoard.Size - 1; i++)
+            for(int i = 1; i <= this.GameBoard.Size - 1; i++)
             {
-                if(s_GameBoard.GameBoard[i, s_GameBoard.Size - i] == i_PlayerMarkSign)
+                if(m_GameBoard.GameBoard[i, m_GameBoard.Size - i] == i_PlayerMarkSign)
                 {
                     counter++;
                 }
@@ -174,15 +167,13 @@ namespace ReverseTicTacToeGame
             return counter == i_NumberOfSignsToWin;
         }
 
-        private static bool checkWinInMainDiagonal(
-            ePlayersMark i_PlayerMarkSign,
-            int i_NumberOfSignsToWin)
+        private bool checkWinInMainDiagonal(ePlayersMark i_PlayerMark, int i_NumberOfSignsToWin)
         {
             int counter = 0;
 
-            for(int i = 1; i < s_GameBoard.Size; i++)
+            for(int i = 1; i < this.GameBoard.Size; i++)
             {
-                if(s_GameBoard.GameBoard[i, i] == i_PlayerMarkSign)
+                if(this.GameBoard.GameBoard[i, i] == i_PlayerMark)
                 {
                     counter++;
                 }
@@ -195,22 +186,19 @@ namespace ReverseTicTacToeGame
             return counter == i_NumberOfSignsToWin;
         }
 
-        private static bool checkWinInRowAndColumn(
-            (int row, int column) i_Point,
-            ePlayersMark i_PlayerMarkSign,
-            int i_NumberOfSignsToWin)
+        private bool checkWinInRowAndColumn((int row, int column) i_Point, ePlayersMark i_PlayerMark, int i_NumberOfSignsToWin)
         {
             int counterRow = 0;
             int counterColumn = 0;
 
-            for(int i = 1; i < s_GameBoard.Size; i++)
+            for(int i = 1; i < this.GameBoard.Size; i++)
             {
-                if(s_GameBoard.GameBoard[i_Point.row, i] == i_PlayerMarkSign)
+                if(m_GameBoard.GameBoard[i_Point.row, i] == i_PlayerMark)
                 {
                     counterRow++;
                 }
 
-                if(s_GameBoard.GameBoard[i, i_Point.column] == i_PlayerMarkSign)
+                if(m_GameBoard.GameBoard[i, i_Point.column] == i_PlayerMark)
                 {
                     counterColumn++;
                 }
@@ -218,13 +206,13 @@ namespace ReverseTicTacToeGame
 
             return (counterRow == i_NumberOfSignsToWin) || (counterColumn == i_NumberOfSignsToWin);
         }
-        
+
         /* Tie happened when the board is full and a win didnt cause */
-        private static bool thereIsTie()
+        private bool thereIsTie()
         {
-            return GameLogic.GameBoard.IsFull();
+            return this.GameBoard.IsFull();
         }
-        
+
         /* we NOTE (-1,-1) as a sign of Q is appeared from the UI, (-1,-1) is not valid in ANY board game */
         private static bool isQuitPoint((int row, int column) i_Spot)
         {
@@ -233,23 +221,25 @@ namespace ReverseTicTacToeGame
             return isQuitPoint;
         }
 
-        internal static bool IsEmptySpot(int i_Row, int i_Column)
+        internal bool IsEmptySpot(int i_Row, int i_Column)
         {
-            bool isEmptySpot = s_GameBoard.IsEmptySpot(i_Row, i_Column);
+            bool isEmptySpot = this.GameBoard.IsEmptySpot(i_Row, i_Column);
 
             return isEmptySpot;
         }
 
-        public static bool IsInBoardRangeSize(int i_Number)
+        public bool IsInBoardRangeSize(int i_Number)
         {
-            bool isInRangeOfBoard = i_Number >= 1 && i_Number < s_GameBoard.Size;
+            const int k_MinValuePossibleEnterToBoard = 1;
+
+            bool isInRangeOfBoard = i_Number >= k_MinValuePossibleEnterToBoard && i_Number < this.GameBoard.Size;
 
             return isInRangeOfBoard;
         }
 
-        internal static bool IsValidSpot(int i_Row, int i_Col)
+        internal bool IsValidSpot(int i_Row, int i_Col)
         {
-            bool isValidSpot = IsEmptySpot(i_Row, i_Col);
+            bool isValidSpot = this.IsEmptySpot(i_Row, i_Col);
 
             return isValidSpot;
         }
@@ -261,7 +251,7 @@ namespace ReverseTicTacToeGame
             return isValidSizeBoard;
         }
 
-        internal static void PreparingForAnotherRound()
+        internal void PreparingForAnotherGame()
         {
             CurrentGameState = eGameState.Playing;
             createNewBoardForAnotherGame();

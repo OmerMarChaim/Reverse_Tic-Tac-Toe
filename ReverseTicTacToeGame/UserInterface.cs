@@ -6,13 +6,20 @@ using static ReverseTicTacToeGame.ePlayersMark;
 
 namespace ReverseTicTacToeGame
 {
-    internal static class UserInterface
+    internal class UserInterface
     {
-        private const char k_Circle = 'O'; 
+        private const char k_Circle = 'O';
         private const char k_Cross = 'X';
         private const char k_Empty = ' ';
         private const char k_Player1Sign = k_Cross;
         private const char k_Player2Sign = k_Circle;
+        private GameLogic m_Game;
+
+        internal UserInterface(GameLogic i_Game)
+        {
+            m_Game = i_Game;
+        }
+
         public static char Player1Sign
         {
             get { return k_Player1Sign; }
@@ -26,24 +33,25 @@ namespace ReverseTicTacToeGame
         {
             Console.WriteLine("Hello and Welcome to our game!");
 
-            int boardSize = ValiditionUi.GetValidBoardSize() + 1;
+            int boardSize = getValidBoardSize() + 1;
             bool player1IsComputer = false;
-            bool player2IsComputer = ValiditionUi.IsPlayerIsComputer();
+            bool player2IsComputer = isPlayerIsComputer();
             // ReSharper disable once ConditionIsAlwaysTrueOrFalse
             GameLogic game = new GameLogic(boardSize, player1IsComputer, player2IsComputer);
-            UserInterface.PrintBoard();
-            startGame();
-        } 
+            UserInterface gameUi = new UserInterface(game);
+            gameUi.printBoard();
+            gameUi.startGame();
+        }
 
-        private static void startGame() // Checked
+        private void startGame() // Checked
         {
             bool wantAnotherGameFlag = true;
 
             while(wantAnotherGameFlag)
             {
-                while(GameLogic.CurrentGameState == GameLogic.eGameState.Playing)
+                while(this.m_Game.CurrentGameState == GameLogic.eGameState.Playing)
                 {
-                    GameLogic.OneRoundInGame();
+                    this.m_Game.OneRoundInGame(this);
                 }
 
                 updateTheUserInterfaceAccordingTheState();
@@ -51,14 +59,15 @@ namespace ReverseTicTacToeGame
             }
         }
 
-        private static bool isUserWantAnotherGame() // Checked
+        private bool isUserWantAnotherGame() // Checked
         {
             Console.WriteLine($"Do you want another game? please enter 'Y' for yes ,'Q' for Quit");
             bool wantAnotherGameFlag = getValidYesOrNo();
             // In case which the user want another game - we ask the logic to make for us Preparing For Another Round
             if(wantAnotherGameFlag)
             {
-                GameLogic.PreparingForAnotherRound();
+                this.m_Game.PreparingForAnotherGame();
+                this.CleanAndShowBeforeNewTurn();
             }
             else
             {
@@ -68,7 +77,11 @@ namespace ReverseTicTacToeGame
             return wantAnotherGameFlag;
         }
 
-        private static bool getValidYesOrNo() // Checked
+        /// <summary>
+        ///  TODO MOVE TO valition 
+        /// </summary>
+        /// <returns></returns>
+        private bool getValidYesOrNo() // Checked
         {
             string userInput;
             bool yesOrNoFlag = false;
@@ -76,8 +89,8 @@ namespace ReverseTicTacToeGame
             while(!isValid)
             {
                 userInput = Console.ReadLine();
-                bool isYisAppeared = userInput == "Y" || userInput == "y"; 
-                bool isQisAppeared = userInput == "Q" || userInput == "q"; 
+                bool isYisAppeared = userInput == "Y" || userInput == "y";
+                bool isQisAppeared = userInput == "Q" || userInput == "q";
                 if(isQisAppeared || isYisAppeared)
                 {
                     isValid = true;
@@ -86,17 +99,19 @@ namespace ReverseTicTacToeGame
                         yesOrNoFlag = true;
                     }
                 }
-
-                Console.WriteLine("Your input is invalid. if you want to play more enter 'Y', other 'Q'");
+                else
+                {
+                    Console.WriteLine("Your input is invalid. if you want to play more enter 'Y', other 'Q'");
+                }
             }
 
             return yesOrNoFlag;
         }
 
-        private static void updateTheUserInterfaceAccordingTheState() // Checked
+        private void updateTheUserInterfaceAccordingTheState() // Checked
         {
-            eGameState currentState = CurrentGameState;
-            ePlayersMark signOfTheWinner = WinnerPlayer.Sign;
+            eGameState currentState = this.m_Game.CurrentGameState;
+            ePlayersMark signOfTheWinner = this.m_Game.WinnerPlayer.Sign;
 
             if(currentState == Win)
             {
@@ -114,12 +129,12 @@ namespace ReverseTicTacToeGame
             printScore();
         }
 
-        private static void printScore() // Checked
+        private void printScore() // Checked
         {
             Console.WriteLine(
                 $@"The current score is:
-{GameLogic.Player1.Sign}:{GameLogic.Player1.NumberOfWins}
-{GameLogic.Player2.Sign}:{GameLogic.Player2.NumberOfWins}");
+{this.m_Game.Player1.Sign}:{this.m_Game.Player1.NumberOfWins}
+{this.m_Game.Player2.Sign}:{this.m_Game.Player2.NumberOfWins}");
         }
 
         private static void printTieMessage() // Checked
@@ -137,7 +152,7 @@ namespace ReverseTicTacToeGame
             Console.WriteLine($"You Quit from the Game! The winner in this round is : {i_SignOfTheWinner}");
         }
 
-        internal static (int, int) GetValidPointFromUser(ePlayersMark i_PlayerMarkSign) // Checked
+        internal (int, int) GetValidPointFromUser(ePlayersMark i_PlayerMarkSign) // Checked
         {
             bool isValidPoint = false;
             int row = 0;
@@ -149,7 +164,7 @@ Please enter one digit number as row and then column for your next move :");
             while(!isValidPoint)
             {
                 Console.WriteLine($"{i_PlayerMarkSign} : Please enter row number:");
-                row = ValiditionUi.GetValidNumberInBoardRangeFromUser();
+                row = getValidNumberInBoardRangeFromUser();
                 if(row == -1)
                 {
                     column = -1;
@@ -158,7 +173,7 @@ Please enter one digit number as row and then column for your next move :");
                 }
 
                 Console.WriteLine($"{i_PlayerMarkSign} : Please enter column number:");
-                column = ValiditionUi.GetValidNumberInBoardRangeFromUser();
+                column = getValidNumberInBoardRangeFromUser();
                 if(column == -1)
                 {
                     row = -1;
@@ -166,7 +181,7 @@ Please enter one digit number as row and then column for your next move :");
                     break;
                 }
 
-                isValidPoint = GameLogic.IsEmptySpot(row, column);
+                isValidPoint = this.m_Game.IsEmptySpot(row, column);
                 if(isValidPoint == false)
                 {
                     Console.WriteLine(
@@ -178,35 +193,35 @@ REMINDER: choose one digit number as ROW and then COLUMN in valid range size, fo
             return (row, column);
         }
 
-        public static void ClearBoardBeforeNewMove() // Checked
+        private static void clearBoardBeforeNewMove() // Checked
         {
              Ex02.ConsoleUtils.Screen.Clear();
             //Console.WriteLine("Clear!");
         }
 
-        public static void PrintBoard() // Checked
+        private void printBoard() // Checked
         {
-            Console.WriteLine(toStringBoard());
+            Console.WriteLine(this.toStringBoard());
         }
 
-        private static string toStringBoard() // Checked
+        private string toStringBoard() // Checked
         {
             char space = ' ';
             StringBuilder resultedString = new StringBuilder($"{space}{space}");
-            
-            for(int col = 1; col < GameLogic.GameBoard.Size; col++)
+
+            for(int col = 1; col < this.m_Game.GameBoard.Size; col++)
             {
                 resultedString.Append($"{col}");
-                resultedString.Append(space,3);
+                resultedString.Append(space, 3);
             }
 
             resultedString.AppendLine();
-            for(int row = 1; row < GameLogic.GameBoard.Size; row++)
+            for(int row = 1; row < this.m_Game.GameBoard.Size; row++)
             {
                 resultedString.Append($"{row}|");
-                for(int col = 1; col < GameLogic.GameBoard.Size; col++)
+                for(int col = 1; col < this.m_Game.GameBoard.Size; col++)
                 {
-                    ePlayersMark currentSign = GameLogic.GameBoard.GameBoard[row, col];
+                    ePlayersMark currentSign = this.m_Game.GameBoard.GameBoard[row, col];
                     char currentChar = k_Empty;
                     if(currentSign == ePlayersMark.Player1)
                     {
@@ -216,22 +231,127 @@ REMINDER: choose one digit number as ROW and then COLUMN in valid range size, fo
                     {
                         currentChar = k_Circle;
                     }
-                    
+
                     resultedString.Append($" {currentChar} |");
                 }
 
                 resultedString.AppendLine();
                 resultedString.Append(space);
-                for(int col = 1; col < GameLogic.GameBoard.Size; col++)
-                { // 1-5 2-9 3-13 4-17 5-21 --> 1=5 2=5+4 3=5+4+3 4=5+4+3+2
-                        resultedString.Append('=', 4);
+                for(int col = 1; col < this.m_Game.GameBoard.Size; col++)
+                {
+                    // 1-5 2-9 3-13 4-17 5-21 --> 1=5 2=5+4 3=5+4+3 4=5+4+3+2
+                    resultedString.Append('=', 4);
                 }
+
                 resultedString.Append('=');
                 resultedString.AppendLine();
             }
-            
 
             return resultedString.ToString();
+        }
+
+        private static int getValidBoardSize()
+        {
+            Console.WriteLine("Please enter the board size - an integer between 3-9");
+
+            return getValidSizeBoardFromUser();
+        }
+
+        private static bool isPlayerIsComputer()
+        {
+            bool isComputer = false;
+            Console.WriteLine(
+                @"Please choose who is you rival:
+1) Human player
+2) Computer");
+            bool isValid = false;
+            while(!isValid)
+            {
+                string userInput = Console.ReadLine();
+                if(userInput == "1")
+                {
+                    // ReSharper disable once RedundantAssignment
+                    isComputer = false;
+                    isValid = true;
+                }
+                else if(userInput == "2")
+                {
+                    isComputer = true;
+                    isValid = true;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter 1 or 2 !");
+                }
+            }
+
+            return isComputer;
+        }
+
+        /// <summary>
+        /// TODO: remove the duplication to code $OMER$
+        /// </summary>
+        /// <returns></returns>
+        private int getValidNumberInBoardRangeFromUser()
+        {
+            bool isValidNumberFormat = false;
+            bool isValidRange = false;
+            int resultNumber = 0;
+
+            while(!isValidNumberFormat || !isValidRange)
+            {
+                string userInput = Console.ReadLine();
+                if (userInput == "q" || userInput == "Q")
+                {
+                    resultNumber = -1;
+                    break;
+                }
+                isValidNumberFormat = int.TryParse(userInput, out resultNumber);
+                isValidRange = this.m_Game.IsInBoardRangeSize(resultNumber);
+                if (!isValidNumberFormat)
+                {
+                    Console.WriteLine("Your input is not a one digit number, try again");
+                }
+                else if(!isValidRange)
+                {
+                    Console.WriteLine($"Your input is not in range 1 - {this.m_Game.GameBoard.Size - 1}, try again");
+                }
+
+               
+            }
+
+            return resultNumber;
+        }
+
+        private static int getValidSizeBoardFromUser()
+        {
+            bool isValidNumberFormat = false;
+            bool isValidRange = false;
+            int resultNumber = 0;
+          
+            while(!isValidNumberFormat || !isValidRange)
+            {
+                string userInput = Console.ReadLine();
+                isValidNumberFormat = int.TryParse(userInput, out resultNumber);
+                isValidRange = GameLogic.IsValidSizeBoard(resultNumber);
+                if (!isValidNumberFormat)
+                {
+                    Console.WriteLine("Your input is not a one digit number, try again");
+                }
+                else if(!isValidRange)
+                {
+                    Console.WriteLine($"Your input is not in range 3-9, try again");
+                }
+
+            }
+
+            return resultNumber;
+        }
+
+        internal void CleanAndShowBeforeNewTurn()
+        {
+            UserInterface.clearBoardBeforeNewMove();
+            this.printBoard();
         }
     }
 }
